@@ -11,7 +11,7 @@ terraform {
       version = ">= 4.9.0, < 5.0.0"
     }
   }
-  cloud {
-    
-  }
+  # cloud {
+
+  # }
 }
