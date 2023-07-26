@@ -109,7 +109,6 @@ locals {
 
 module "tagging" {
   source          = "./modules/tagging" 
-  version         = "0.0.6"
   app_code        = local.labels.app_code
   app_environment = local.labels.app_environment
   classification  = local.labels.classification
@@ -127,7 +126,6 @@ module "tagging" {
 # A single shared bucket for current example
 module "storage" {
   source  = "./modules/cloud-storage"  
-  version = "1.0.2"
 
   project_id         = local.project_id
   bucket_name        = local.storage.bucket_name
@@ -144,7 +142,6 @@ module "storage" {
 # A single BigQuery dataset shared with all initiative team members. Each DS will have its own table.
 module "dataset" {
   source  = "./modules/bigquery-dataset"
-  version = "0.0.7"
 
   project_id          = local.project_id
   labels              = module.tagging.metadata
@@ -160,7 +157,6 @@ module "vertex-ai-workbench" {
   for_each = module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev" ? (
   { for n in local.notebooks : "${n.user}:${n.image_family}" => n }) : ({})
   source  = "./modules/vertex-notebooks" 
-  version = "0.3.0"
 
   project_id = local.project_id
   labels     = module.tagging.metadata
@@ -186,7 +182,6 @@ module "vertex-ai-workbench" {
 # Single repository with all initiative team members
 module "artifact-registry" {
   source  = "./modules/artifact-registry" 
-  version = "0.0.3"
 
   project_id = local.project_id
   labels     = module.tagging.metadata
@@ -203,7 +198,6 @@ module "artifact-registry" {
 
 module "feature-store" {
   source  = "./modules/feature-store" 
-  version = "0.0.1"
 
   project_id      = local.project_id
   labels          = module.tagging.metadata
