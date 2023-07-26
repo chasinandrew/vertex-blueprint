@@ -15,7 +15,7 @@ on:
 
 jobs:
   dev:
-    uses: ./.github/workflows/_tf_infrastructure.yaml
+    uses: ./.github/workflows/_terraform.yaml
     permissions: 
       actions: read
       id-token: write
