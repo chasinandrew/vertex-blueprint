@@ -1,0 +1,31 @@
+name: PLAN AND APPLY TERRAFORM
+on:
+  push:
+    branches:
+    - 'feature/**'
+    - 'develop'
+    - 'qa'
+    - 'main'
+  pull_request:
+    branches:
+    - 'feature/**'
+    - 'develop'
+    - 'qa'
+    - 'main'
+
+jobs:
+  dev:
+    uses: ./.github/workflows/_tf_infrastructure.yaml
+    permissions: 
+      actions: read
+      id-token: write
+      contents: read
+    with: 
+      environment: dev
+      working_directory: ./terraform
+      first_run: false
+      workspace_name: data-science
+      terraform_org: google-testing-org
+      project_id: hca-demo-dev
+      region: us-east4
+    secrets: inherit
