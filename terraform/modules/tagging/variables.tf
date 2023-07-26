@@ -23,7 +23,7 @@ variable "app_environment" {
   description = "Environment (e.g. dev/qa/prod/uat/poc/test/stage/train); prevents cross-environment communications"
 
   validation {
-    condition     = contains(["dev", "qa", "prod", "uat", "poc", "test","stage","train","dr","devdr"], var.app_environment)
+    condition     = contains(["dev", "qa", "prod", "uat", "poc", "test", "stage", "train", "dr", "devdr"], var.app_environment)
     error_message = "App_environment must be one of: dev/qa/prod/uat/poc/test/stage/train."
   }
 }

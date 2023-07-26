@@ -49,11 +49,11 @@ locals {
   force_destroy                      = true
 
   labels = {
-    region = local.region
-    app_code       = local.app_code
-    classification = local.classification
-    cost_id        = local.cost_id
-    department_id  = local.department_id
+    region          = local.region
+    app_code        = local.app_code
+    classification  = local.classification
+    cost_id         = local.cost_id
+    department_id   = local.department_id
     project_id      = local.hca_project_id
     tco_id          = local.tco_id
     app_environment = local.app_environment
@@ -108,7 +108,7 @@ locals {
 }
 
 module "tagging" {
-  source          = "./modules/tagging" 
+  source          = "./modules/tagging"
   app_code        = local.labels.app_code
   app_environment = local.labels.app_environment
   classification  = local.labels.classification
@@ -125,7 +125,7 @@ module "tagging" {
 
 # A single shared bucket for current example
 module "storage" {
-  source  = "./modules/cloud-storage"  
+  source = "./modules/cloud-storage"
 
   project_id         = local.project_id
   bucket_name        = local.storage.bucket_name
@@ -141,7 +141,7 @@ module "storage" {
 
 # A single BigQuery dataset shared with all initiative team members. Each DS will have its own table.
 module "dataset" {
-  source  = "./modules/bigquery-dataset"
+  source = "./modules/bigquery-dataset"
 
   project_id          = local.project_id
   labels              = module.tagging.metadata
@@ -156,7 +156,7 @@ module "dataset" {
 module "vertex-ai-workbench" {
   for_each = module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev" ? (
   { for n in local.notebooks : "${n.user}:${n.image_family}" => n }) : ({})
-  source  = "./modules/vertex-notebooks" 
+  source = "./modules/vertex-notebooks"
 
   project_id = local.project_id
   labels     = module.tagging.metadata
@@ -181,7 +181,7 @@ module "vertex-ai-workbench" {
 
 # Single repository with all initiative team members
 module "artifact-registry" {
-  source  = "./modules/artifact-registry" 
+  source = "./modules/artifact-registry"
 
   project_id = local.project_id
   labels     = module.tagging.metadata
@@ -197,7 +197,7 @@ module "artifact-registry" {
 }
 
 module "feature-store" {
-  source  = "./modules/feature-store" 
+  source = "./modules/feature-store"
 
   project_id      = local.project_id
   labels          = module.tagging.metadata

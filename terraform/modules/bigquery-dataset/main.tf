@@ -19,5 +19,5 @@ module "bigquery" {
   views  = var.views
   # DS-REQ-03
   dataset_labels = var.labels
-  access = var.access
+  access         = var.access
 }
