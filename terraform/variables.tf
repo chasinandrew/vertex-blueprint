@@ -1,3 +1,4 @@
+#TODO: remove this variable, domain restricted sharing removes the need for this variable validation
 variable "user_domain" {
   type        = string
   description = "3-4 ID Domain Name"
@@ -28,11 +29,6 @@ variable "gcp_project_id" {
 }
 
 
-# variable "google_credentials" {
-#   description = "the contents of a service account key file in JSON format."
-#   type        = string
-# }
-
 variable "gcp_region" {
   type        = string
   description = "Location for GCP Resource Deployment"
@@ -41,14 +37,14 @@ variable "gcp_region" {
 variable "host_project_id" { # default
   type        = string
   description = "Shared VPC Host Project for Notebook"
-  default     = "hca-dsa-net-train"
+  default     = "hca-dsa-net-train" #TODO: remove default for this variable
   #TODO: verify validation done by notebook module
 }
 
 variable "network" { # default
   type        = string
   description = "Network to use for Notebook"
-  default     = "hca-dsa-train-notebooks-shared-vpc"
+  default     = "hca-dsa-train-notebooks-shared-vpc" #TODO: remove default for this variable 
   #TODO: verify validation done by notebook module
 }
 
