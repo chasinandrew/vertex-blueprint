@@ -182,7 +182,6 @@ module "vertex-ai-workbench" {
 # Single repository with all initiative team members
 module "artifact-registry" {
   source = "./modules/artifact-registry"
-
   project_id = local.project_id
   labels     = module.tagging.metadata
 
