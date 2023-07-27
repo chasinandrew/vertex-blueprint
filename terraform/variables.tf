@@ -3,10 +3,6 @@ variable "user_domain" {
   type        = string
   description = "3-4 ID Domain Name"
   default     = "hca.corpad.net"
-  validation {
-    condition     = contains(["hca.corpad.net"], var.user_domain)
-    error_message = "Variable user_domain must be in allowed list."
-  }
 }
 
 variable "bucket_name" { # TODO: derived

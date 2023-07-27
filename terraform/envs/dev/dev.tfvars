@@ -14,7 +14,7 @@ labels = {
 host_project_id      = "arched-inkwell-368821"
 network              = "default"
 deeplearning_project = "hca-demo-dev"
-
+user_domain = "google.com"
 dsa_services = {
   dataset_id_prefix               = "hin_dsa"
   artifact_registry_naming_prefix = "docker-repo"
@@ -22,7 +22,7 @@ dsa_services = {
 }
 notebooks = [
   {
-    user                = "plo4860"
+    user                = "andrewchasin"
     machine_type        = "n1-standard-4"
     zone                = "us-east4-b"
     image_family        = "tf-ent-2-8-cpu-ubuntu-2004"
