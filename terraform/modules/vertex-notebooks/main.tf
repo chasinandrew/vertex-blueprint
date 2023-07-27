@@ -51,7 +51,7 @@ resource "google_notebooks_instance" "instance" {
   }
 
   instance_owners = [var.instance_owner]
-  service_account = resource.google_service_account.sa_p_notebook_compute.email
+  service_account = google_service_account.sa_p_notebook_compute.email
 
   install_gpu_driver = var.install_gpu_driver
   boot_disk_type     = var.boot_disk_type
