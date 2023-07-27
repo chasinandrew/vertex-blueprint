@@ -6,12 +6,12 @@ resource "google_service_account" "sa_p_notebook_compute" {
   display_name = "Service Account for Notebook ${local.notebook_instance_name}"
 }
 
-### Bind Custom Role to Notebook Service Account
-resource "google_project_iam_member" "notebook_custom_role" {
-  project = var.project_id
-  role    = "organizations/${var.organization_id}/roles/notebook_restricted_data_viewer"
-  member  = "serviceAccount:${google_service_account.sa_p_notebook_compute.email}"
-}
+# ### Bind Custom Role to Notebook Service Account
+# resource "google_project_iam_member" "notebook_custom_role" {
+#   project = var.project_id
+#   role    = "organizations/${var.organization_id}/roles/notebook_restricted_data_viewer"
+#   member  = "serviceAccount:${google_service_account.sa_p_notebook_compute.email}"
+# }
 
 #### Assign Notebook Service Account Role to impersonate MLOPS service account
 #esource "google_service_account_iam_member" "mlops-account-iam" {
