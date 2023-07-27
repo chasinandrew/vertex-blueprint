@@ -11,8 +11,8 @@ labels = {
   app_environment = "dev"
 }
 
-host_project_id = "arched-inkwell-368821"
-network = "default"
+host_project_id      = "arched-inkwell-368821"
+network              = "default"
 deeplearning_project = "hca-demo-dev"
 
 dsa_services = {
@@ -28,17 +28,17 @@ notebooks = [
     image_family        = "tf-ent-2-8-cpu-ubuntu-2004"
     post_startup_script = "gs://dsa-dev-notebook-startup/deb-notebook-test-bucket/startuplab2.sh"
   }
-#   {
-#     user                = "otw4939"
-#     machine_type        = "n1-standard-1"
-#     zone                = "us-east4-a"
-#     image_family        = "common-cpu-notebooks-debian-10"
-#     post_startup_script = "gs://dsa-dev-notebook-startup/deb-notebook-test-bucket/startuplab2.sh"
-#   },
-#   {
-#     user                = "cax4817"
-#     machine_type        = "n1-standard-4"
-#     image_family        = "tf-ent-2-8-cpu-ubuntu-2004"
-#     post_startup_script = "gs://dsa-dev-notebook-startup/deb-notebook-test-bucket/startuplab2.sh"
-#   }
+  #   {
+  #     user                = "otw4939"
+  #     machine_type        = "n1-standard-1"
+  #     zone                = "us-east4-a"
+  #     image_family        = "common-cpu-notebooks-debian-10"
+  #     post_startup_script = "gs://dsa-dev-notebook-startup/deb-notebook-test-bucket/startuplab2.sh"
+  #   },
+  #   {
+  #     user                = "cax4817"
+  #     machine_type        = "n1-standard-4"
+  #     image_family        = "tf-ent-2-8-cpu-ubuntu-2004"
+  #     post_startup_script = "gs://dsa-dev-notebook-startup/deb-notebook-test-bucket/startuplab2.sh"
+  #   }
 ]
