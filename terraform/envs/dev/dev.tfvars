@@ -11,19 +11,23 @@ labels = {
   app_environment = "dev"
 }
 
+host_project_id = "arched-inkwell-368821"
+network = "default"
+deeplearning_project = "hca-demo-dev"
+
 dsa_services = {
   dataset_id_prefix               = "hin_dsa"
   artifact_registry_naming_prefix = "docker-repo"
   bucket_suffix                   = "4dd3aa"
 }
 notebooks = [
-#   {
-#     user                = "plo4860"
-#     machine_type        = "n1-standard-4"
-#     zone                = "us-east4-b"
-#     image_family        = "tf-ent-2-8-cpu-ubuntu-2004"
-#     post_startup_script = "gs://dsa-dev-notebook-startup/deb-notebook-test-bucket/startuplab2.sh"
-#   },
+  {
+    user                = "plo4860"
+    machine_type        = "n1-standard-4"
+    zone                = "us-east4-b"
+    image_family        = "tf-ent-2-8-cpu-ubuntu-2004"
+    post_startup_script = "gs://dsa-dev-notebook-startup/deb-notebook-test-bucket/startuplab2.sh"
+  }
 #   {
 #     user                = "otw4939"
 #     machine_type        = "n1-standard-1"
