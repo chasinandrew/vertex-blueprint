@@ -15,6 +15,7 @@ host_project_id      = "arched-inkwell-368821"
 network              = "default"
 deeplearning_project = "hca-demo-dev"
 user_domain = "google.com"
+
 dsa_services = {
   dataset_id_prefix               = "hin_dsa"
   artifact_registry_naming_prefix = "docker-repo"
