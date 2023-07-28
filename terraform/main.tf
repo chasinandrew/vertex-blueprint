@@ -7,7 +7,7 @@
 #   - region
 #   - labels
 #   - notebooks
-#   - dsa_services
+#    - dsa_services
 
 resource "random_id" "random_suffix" {
   byte_length = 3
