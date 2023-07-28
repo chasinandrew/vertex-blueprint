@@ -73,6 +73,7 @@ jobs:
 
       ## Terraform Plan All ENVs
       - name: Terraform Plan DEV
+        if: github.ref != 'refs/heads/main' && github.event_name != 'push'
         id: plan_dev
         run: terraform plan -no-color -input=false -var-file=envs/dev/dev.tfvars
         working-directory: ${{ inputs.working_directory }}

@@ -30,12 +30,11 @@ locals {
   bucket_sa_display_name = var.bucket_sa_display_name
   host_project_id        = var.host_project_id #constant
   network                = var.network         #constant
-  subnet = "woah"
-  # format("%s-%s-%s",
-  #   local.project_id,
-  #   "notebooks",
-  #   local.region
-  # )
+  subnet = format("%s-%s-%s",
+    local.project_id,
+    "notebooks",
+    local.region
+  )
 
   metadata                           = var.metadata
   dataset_dataset_id                 = format("%s_%s", var.dsa_services.dataset_id_prefix, random_id.random_suffix.hex)
