@@ -26,7 +26,7 @@ notebooks = [
     user                = "andrewchasin"
     machine_type        = "n1-standard-4"
     zone                = "us-east4-b"
-    image_family        = "sles-15-sp4-hardened-byos-v20230502-x86-64"
+    image_family        = "sles-15-sp4-hardened-byos"
     post_startup_script = ""
   }
   #   {
