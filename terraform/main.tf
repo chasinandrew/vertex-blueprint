@@ -1,5 +1,5 @@
 //
-// Copyright 2022 Google. This software is provided as-is, without warranty or representation for any use or purpose. Your use of it is subject to your agreement with Google.
+// Copyright 2023 Google. This software is provided as-is, without warranty or representation for any use or purpose. Your use of it is subject to your agreement with Google.
 //
 
 #  Inputs:
@@ -204,4 +204,21 @@ module "feature-store" {
   app_environment = module.tagging.metadata.app_environment
   node_count      = local.feature_store.node_count
   force_destroy   = local.feature_store.force_destroy
+}
+
+#TODO: add to hca repo 
+data "google_project" "project" {
+  project_id = var.gcp_project_id
+}
+
+resource "google_project_iam_member" "shared_vpc" {
+  project = var.host_project_id
+  role    = "roles/compute.networkUser"
+  member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-notebooks.iam.gserviceaccount.com"
+}
+
+resource "google_project_iam_member" "image_user" {
+  project = var.gcp_project_id
+  role    = "roles/compute.imageUser"
+  member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-notebooks.iam.gserviceaccount.com"
 }

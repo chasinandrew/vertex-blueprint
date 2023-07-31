@@ -33,15 +33,11 @@ variable "gcp_region" {
 variable "host_project_id" { # default
   type        = string
   description = "Shared VPC Host Project for Notebook"
-  default     = "hca-dsa-net-train" #TODO: remove default for this variable
-  #TODO: verify validation done by notebook module
 }
 
 variable "network" { # default
   type        = string
   description = "Network to use for Notebook"
-  default     = "hca-dsa-train-notebooks-shared-vpc" #TODO: remove default for this variable 
-  #TODO: verify validation done by notebook module
 }
 
 variable "metadata" {
