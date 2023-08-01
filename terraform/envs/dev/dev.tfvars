@@ -26,7 +26,7 @@ notebooks = [
     user                = "andrewchasin"
     machine_type        = "n1-standard-4"
     zone                = "us-east4-b"
-    image_family        = "tf-2-11-cu113-notebooks-debian-11-py310"
+    image_family        = "tf-ent-2-11-cu113-notebooks"
     post_startup_script = ""
   }
   #   {
