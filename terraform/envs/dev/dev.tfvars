@@ -26,7 +26,7 @@ notebooks = [
     user                = "andrewchasin"
     machine_type        = "n1-standard-4"
     zone                = "us-east4-b"
-    image_family        = "common-cpu-debian-10"
+    image_family        = "common-cpu-notebooks-debian-10"
     post_startup_script = ""
   }
   #   {
