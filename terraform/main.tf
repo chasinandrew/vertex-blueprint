@@ -25,9 +25,7 @@ locals {
   hca_project_id  = var.labels.hca_project_id
   user_domain     = var.user_domain #constant
 
-  bucket_name            = format("%s-%s", var.bucket_name, var.dsa_services.bucket_suffix) # TODO: dynamic bucket name
-  bucket_sa_name         = format("%s-sa", local.bucket_name)
-  bucket_sa_display_name = var.bucket_sa_display_name
+
   host_project_id        = var.host_project_id #constant
   network                = var.network         #constant
   subnet = format("%s-%s-%s",
@@ -67,23 +65,39 @@ locals {
       zone         = try(nb.zone, var.default_zone)
       image_family = nb.image_family
       accelerator_config = try({
-        type       = nb.gpu_type # TODO: validate against a list of valid accelerators
+        type       = nb.gpu_type
         core_count = tonumber(nb.gpu_count)
       }, null)
       post_startup_script = try(nb.post_startup_script, null)
     }
   ]
 
-  storage = {
-    bucket_name        = [local.bucket_name]
-    sa_display_name    = local.bucket_sa_display_name
-    sa_name            = local.bucket_sa_name
-    bucket_viewers     = [""]
-    bucket_admins      = [""]
-    bucket_creators    = [""]
-    num_newer_versions = "1" #TODO: try using '0', verify fuse
-    force_destroy      = false
-  }
+  bucket_name            = format("%s-%s", var.bucket_name, var.dsa_services.bucket_suffix) # TODO: dynamic bucket name
+  bucket_sa_name         = format("%s-sa", local.bucket_name)
+  bucket_sa_display_name = var.bucket_sa_display_name
+
+  buckets = [
+    for bucket in var.buckets : {
+      bucket_name     = [format("%s-%s", bucket.bucket_name, var.dsa_services.bucket_suffix)]
+      sa_display_name = try(bucket.sa_display_name, format("%s Service Account", bucket.bucket_name))
+      sa_name         = try(bucket.sa_name, format("%s-bucket-sa", var.gcp_project_id))
+      bucket_viewers  = try(bucket.bucket_viewers, [""])
+      bucket_admins   = try(bucket.bucket_admins, [""])
+      bucket_creators = try(bucket.bucket_creators, [""])
+      num_newer_versions = try(bucket.num_newer_versions, 1)
+      force_destroy = try(bucket.force_destroy, false)
+    }
+  ]
+  # storage = {
+  #   bucket_name        = [local.bucket_name]
+  #   sa_display_name    = local.bucket_sa_display_name
+  #   sa_name            = local.bucket_sa_name
+  #   bucket_viewers     = [""]
+  #   bucket_admins      = [""]
+  #   bucket_creators    = [""]
+  #   num_newer_versions = "1" #TODO: try using '0', verify fuse
+  #   force_destroy      = false
+  # }
   dataset = {
     user_group  = []
     admin_group = []
@@ -126,13 +140,13 @@ module "tagging" {
 # A single shared bucket for current example
 module "storage" {
   source = "./modules/cloud-storage"
-
+  for_each = local.buckets
   project_id         = local.project_id
-  bucket_name        = local.storage.bucket_name
+  bucket_name        = each.value.bucket_name
   bucket_labels      = module.tagging.metadata
-  sa_display_name    = local.storage.sa_display_name
-  sa_name            = local.storage.sa_name
-  bucket_viewers     = local.storage.bucket_viewers
+  sa_display_name    = each.value.sa_display_name
+  sa_name            = each.value.sa_name
+  bucket_viewers     = each.value.bucket_viewers
   bucket_admins      = local.storage.bucket_admins
   bucket_creators    = local.storage.bucket_creators
   num_newer_versions = local.storage.num_newer_versions

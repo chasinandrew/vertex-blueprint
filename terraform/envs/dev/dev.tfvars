@@ -29,6 +29,21 @@ notebooks = [
     image_family        = "common-cpu-notebooks-debian-10"
     post_startup_script = ""
   }
+
+buckets = [ 
+  { 
+    bucket_name = "bucket-one"
+  }, 
+  {
+    bucket_name = "bucket-two"
+  }
+]
+
+  #buckets 
+  #datasets
+  #artifact_registry_repos
+  #service_accounts & permissions 
+
   #   {
   #     user                = "otw4939"
   #     machine_type        = "n1-standard-1"

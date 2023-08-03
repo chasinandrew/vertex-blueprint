@@ -73,6 +73,11 @@ variable "artifact_registry_admin_group" {
   default     = []
 }
 
+variable "buckets" {
+  type        = list(map(string))
+  description = "List of buckets"
+}
+
 variable "notebooks" {
   type        = list(map(string))
   description = "Input variables for reference architecture - dynamic notebooks"
