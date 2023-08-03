@@ -29,7 +29,7 @@ notebooks = [
     image_family        = "common-cpu-notebooks-debian-10"
     post_startup_script = ""
   }
-
+]
 buckets = [ 
   { 
     bucket_name = "bucket-one"
