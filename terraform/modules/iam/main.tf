@@ -1,5 +1,5 @@
 
-ocals {
+locals {
 
   authoritative = var.mode == "authoritative"
   additive      = var.mode == "additive"
