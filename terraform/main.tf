@@ -142,6 +142,7 @@ module "storage" {
   source             = "./modules/cloud-storage"
   for_each           = var.buckets
   project_id         = local.project_id
+  bucket_labels      = module.tagging.metadata
   bucket_name        = [format("%s-%s", bucket.bucket_name, var.dsa_services.bucket_suffix)]
   sa_display_name    = try(bucket.sa_display_name, format("%s Service Account", bucket.bucket_name))
   sa_name            = try(bucket.sa_name, format("%s-bucket-sa", var.gcp_project_id))
