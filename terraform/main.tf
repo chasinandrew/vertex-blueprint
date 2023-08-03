@@ -235,3 +235,21 @@ resource "google_project_iam_member" "image_user" {
   role    = "roles/compute.imageUser"
   member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-notebooks.iam.gserviceaccount.com"
 }
+
+module "iam_project_roles" {
+  source      = "./modules/iam"
+  count       = length(local.notebooks)
+  project_id  = var.gcp_project_id
+  entity_type = "project"
+  entities    = [var.gcp_project_id]
+
+  bindings_by_principal = {
+    module.vertex-workbench["${count.index}"].sa_notebooks = [
+      "roles/storage.admin",
+      "roles/aiplatform.user",
+      "roles/iam.serviceAccountUser",
+      "roles/bigquery.user",
+      "roles/bigquery.dataEditor"
+    ]
+  }
+}
