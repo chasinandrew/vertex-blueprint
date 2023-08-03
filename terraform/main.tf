@@ -73,7 +73,7 @@ locals {
   ]
 
   bucket_name            = format("%s-%s", var.bucket_name, var.dsa_services.bucket_suffix) # TODO: dynamic bucket name
-  bucket_sa_name         = format("%s-sa", local.bucket_name)
+  # bucket_sa_name         = format("%s-sa", local.bucket_name)
   bucket_sa_display_name = var.bucket_sa_display_name
 
   buckets = [
@@ -147,10 +147,10 @@ module "storage" {
   sa_display_name    = each.value.sa_display_name
   sa_name            = each.value.sa_name
   bucket_viewers     = each.value.bucket_viewers
-  bucket_admins      = local.storage.bucket_admins
-  bucket_creators    = local.storage.bucket_creators
-  num_newer_versions = local.storage.num_newer_versions
-  force_destroy      = local.storage.force_destroy
+  bucket_admins      = each.value.bucket_admins
+  bucket_creators    = each.value.bucket_creators
+  num_newer_versions = each.value.num_newer_versions
+  force_destroy      = each.value.force_destroy
 }
 
 # A single BigQuery dataset shared with all initiative team members. Each DS will have its own table.
