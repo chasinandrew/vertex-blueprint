@@ -143,14 +143,14 @@ module "storage" {
   for_each           = var.buckets
   project_id         = local.project_id
   bucket_labels      = module.tagging.metadata
-  bucket_name        = [format("%s-%s", bucket.bucket_name, var.dsa_services.bucket_suffix)]
-  sa_display_name    = try(bucket.sa_display_name, format("%s Service Account", bucket.bucket_name))
-  sa_name            = try(bucket.sa_name, format("%s-bucket-sa", var.gcp_project_id))
-  bucket_viewers     = try(bucket.bucket_viewers, [""])
-  bucket_admins      = try(bucket.bucket_admins, [""])
-  bucket_creators    = try(bucket.bucket_creators, [""])
-  num_newer_versions = try(bucket.num_newer_versions, 1)
-  force_destroy      = try(bucket.force_destroy, false)
+  bucket_name        = [format("%s-%s", each.value.bucket_name, var.dsa_services.bucket_suffix)]
+  sa_display_name    = try(each.value.sa_display_name, format("%s Service Account", each.value.bucket_name))
+  sa_name            = try(each.value.sa_name, format("%s-bucket-sa", var.gcp_project_id))
+  bucket_viewers     = try(each.value.bucket_viewers, [""])
+  bucket_admins      = try(each.value.bucket_admins, [""])
+  bucket_creators    = try(each.value.bucket_creators, [""])
+  num_newer_versions = try(each.value.num_newer_versions, 1)
+  force_destroy      = try(each.value.force_destroy, false)
 }
 
 # A single BigQuery dataset shared with all initiative team members. Each DS will have its own table.
