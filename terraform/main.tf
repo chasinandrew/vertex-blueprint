@@ -244,7 +244,7 @@ module "iam_project_roles" {
   entities    = [var.gcp_project_id]
 
   bindings_by_principal = {
-    module.vertex-workbench["${count.index}"].sa_notebooks = [
+    module.vertex-ai-workbench["${count.index}"].sa_notebooks = [
       "roles/storage.admin",
       "roles/aiplatform.user",
       "roles/iam.serviceAccountUser",
