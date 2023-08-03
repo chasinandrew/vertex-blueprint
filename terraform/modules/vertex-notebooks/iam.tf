@@ -6,6 +6,8 @@ resource "google_service_account" "sa_p_notebook_compute" {
   display_name = "Service Account for Notebook ${local.notebook_instance_name}"
 }
 
+
+
 # ### Bind Custom Role to Notebook Service Account
 # resource "google_project_iam_member" "notebook_custom_role" {
 #   project = var.project_id
