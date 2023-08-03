@@ -140,7 +140,7 @@ module "tagging" {
 # A single shared bucket for current example
 module "storage" {
   source             = "./modules/cloud-storage"
-  for_each           = var.buckets
+  for_each           = { for obj in var.buckets : obj.bucket_name => obj }
   project_id         = local.project_id
   bucket_labels      = module.tagging.metadata
   bucket_name        = [format("%s-%s", each.value.bucket_name, var.dsa_services.bucket_suffix)]
