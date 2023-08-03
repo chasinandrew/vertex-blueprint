@@ -146,7 +146,7 @@ module "storage" {
   bucket_name        = [format("%s-%s", each.value.bucket_name, var.dsa_services.bucket_suffix)]
   sa_display_name    = try(each.value.sa_display_name, format("%s Service Account", each.value.bucket_name))
   sa_name            = try(each.value.sa_name, format("%s-bucket-sa", var.gcp_project_id))
-  bucket_viewers     = try(each.value.bucket_viewers, [module.vertex-ai-workbench.sa_notebooks])
+  bucket_viewers     = try(each.value.bucket_viewers, [module.vertex-ai-workbench["andrewchasin:common-cpu-notebooks-debian-10"].sa_notebooks])
   bucket_admins      = try(each.value.bucket_admins, [""])
   bucket_creators    = try(each.value.bucket_creators, [""])
   num_newer_versions = try(each.value.num_newer_versions, 1)
@@ -164,7 +164,6 @@ module "dataset" {
   ml_group            = local.dataset.ml_group
   dataset_id          = local.dataset.dataset_id
   protect_from_delete = true
-  # TODO: check if DS tables need to be provisioned
 }
 
 module "vertex-ai-workbench" {
