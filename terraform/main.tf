@@ -26,8 +26,8 @@ locals {
   user_domain     = var.user_domain #constant
 
 
-  host_project_id        = var.host_project_id #constant
-  network                = var.network         #constant
+  host_project_id = var.host_project_id #constant
+  network         = var.network         #constant
   subnet = format("%s-%s-%s",
     local.project_id,
     "notebooks",
@@ -72,22 +72,22 @@ locals {
     }
   ]
 
-  bucket_name            = format("%s-%s", var.bucket_name, var.dsa_services.bucket_suffix) # TODO: dynamic bucket name
+  bucket_name = format("%s-%s", var.bucket_name, var.dsa_services.bucket_suffix) # TODO: dynamic bucket name
   # bucket_sa_name         = format("%s-sa", local.bucket_name)
   bucket_sa_display_name = var.bucket_sa_display_name
 
-  buckets = [
-    for bucket in var.buckets : {
-      bucket_name     = [format("%s-%s", bucket.bucket_name, var.dsa_services.bucket_suffix)]
-      sa_display_name = try(bucket.sa_display_name, format("%s Service Account", bucket.bucket_name))
-      sa_name         = try(bucket.sa_name, format("%s-bucket-sa", var.gcp_project_id))
-      bucket_viewers  = try(bucket.bucket_viewers, [""])
-      bucket_admins   = try(bucket.bucket_admins, [""])
-      bucket_creators = try(bucket.bucket_creators, [""])
-      num_newer_versions = try(bucket.num_newer_versions, 1)
-      force_destroy = try(bucket.force_destroy, false)
-    }
-  ]
+  # buckets = [
+  #   for bucket in var.buckets : {
+  #     bucket_name        = [format("%s-%s", bucket.bucket_name, var.dsa_services.bucket_suffix)]
+  #     sa_display_name    = try(bucket.sa_display_name, format("%s Service Account", bucket.bucket_name))
+  #     sa_name            = try(bucket.sa_name, format("%s-bucket-sa", var.gcp_project_id))
+  #     bucket_viewers     = try(bucket.bucket_viewers, [""])
+  #     bucket_admins      = try(bucket.bucket_admins, [""])
+  #     bucket_creators    = try(bucket.bucket_creators, [""])
+  #     num_newer_versions = try(bucket.num_newer_versions, 1)
+  #     force_destroy      = try(bucket.force_destroy, false)
+  #   }
+  # ]
   # storage = {
   #   bucket_name        = [local.bucket_name]
   #   sa_display_name    = local.bucket_sa_display_name
@@ -139,18 +139,17 @@ module "tagging" {
 
 # A single shared bucket for current example
 module "storage" {
-  source = "./modules/cloud-storage"
-  for_each = local.buckets
+  source             = "./modules/cloud-storage"
+  for_each           = var.buckets
   project_id         = local.project_id
-  bucket_name        = each.value.bucket_name
-  bucket_labels      = module.tagging.metadata
-  sa_display_name    = each.value.sa_display_name
-  sa_name            = each.value.sa_name
-  bucket_viewers     = each.value.bucket_viewers
-  bucket_admins      = each.value.bucket_admins
-  bucket_creators    = each.value.bucket_creators
-  num_newer_versions = each.value.num_newer_versions
-  force_destroy      = each.value.force_destroy
+  bucket_name        = [format("%s-%s", bucket.bucket_name, var.dsa_services.bucket_suffix)]
+  sa_display_name    = try(bucket.sa_display_name, format("%s Service Account", bucket.bucket_name))
+  sa_name            = try(bucket.sa_name, format("%s-bucket-sa", var.gcp_project_id))
+  bucket_viewers     = try(bucket.bucket_viewers, [""])
+  bucket_admins      = try(bucket.bucket_admins, [""])
+  bucket_creators    = try(bucket.bucket_creators, [""])
+  num_newer_versions = try(bucket.num_newer_versions, 1)
+  force_destroy      = try(bucket.force_destroy, false)
 }
 
 # A single BigQuery dataset shared with all initiative team members. Each DS will have its own table.
