@@ -15,8 +15,6 @@ on:
         options: 
         - "Build the environment's Pipeline"
         - "Promote this environment's Pipeline to the Next Environment"
-      # environment:
-      #   type: environment
 
 jobs:
   log-the-inputs:
