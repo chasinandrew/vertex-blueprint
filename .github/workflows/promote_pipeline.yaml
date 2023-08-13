@@ -1,22 +1,22 @@
 on:
   workflow_dispatch:
     inputs:
-          environment:
-            required: true
-            type: choice
-            description: "Select which environment's Vertex AI Pipeline we will build or promote:"
-            options: 
-            - Train
-            - Stage
-          action:
-            required: true
-            type: choice
-            description: "Should we Build or Promote this environment's Pipeline?"
-            options: 
-            - "Build the environment's Pipeline"
-            - "Promote this environment's Pipeline to the Next Environment"
-          # environment:
-          #   type: environment
+      environment:
+        required: true
+        type: choice
+        description: "Select which environment's Vertex AI Pipeline we will build or promote:"
+        options: 
+        - Train
+        - Stage
+      action:
+        required: true
+        type: choice
+        description: "Should we Build or Promote this environment's Pipeline?"
+        options: 
+        - "Build the environment's Pipeline"
+        - "Promote this environment's Pipeline to the Next Environment"
+      # environment:
+      #   type: environment
 
 jobs:
   log-the-inputs:
