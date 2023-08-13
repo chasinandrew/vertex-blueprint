@@ -1,0 +1,62 @@
+on:
+  workflow_dispatch:
+    inputs:
+          environment:
+            required: true
+            type: choice
+            description: "Select which environment's Vertex AI Pipeline we will build or promote:"
+            options: 
+            - Train
+            - Stage
+          action:
+            required: true
+            type: choice
+            description: "Should we Build or Promote this environment's Pipeline?"
+            options: 
+            - "Build the environment's Pipeline"
+            - "Promote this environment's Pipeline to the Next Environment"
+          # environment:
+          #   type: environment
+
+jobs:
+    runs-on: ubuntu-latest
+      
+        if: ${{ inputs.environment == 'Train' }}
+          project_id: hca-demo-dev
+          json_file: vertex_pipelines/train_pipeline/json_file
+          config_file: vertex_pipelines/train_pipeline/config_file
+
+
+        if: ${{ inputs.environment == 'Stage' }}
+          project_id: armentrout-dev 
+          json_file: vertex_pipelines/train_pipeline/json_file
+          config_file: vertex_pipelines/train_pipeline/config_file
+
+
+        if: ${{ inputs.action == 'Build the environment's Pipeline' }}
+              #add build logic here
+
+        if: ${{ inputs.action == 'Promote this environment's Pipeline to the Next Environment' }}
+              #add promotion logic here
+
+    outputs:
+      output1: ${{ steps.step1.outputs.* }}
+      output2: ${{ steps.step2.outputs.* }}
+      output3: ${{ steps.step3.outputs.* }}
+      output4: ${{ steps.step4.outputs.* }}
+      output5: ${{ steps.step5.outputs.* }}
+      output6: ${{ steps.step6.outputs.* }}
+      
+    steps:
+    - id: step1
+      run: echo "environment selected : ${{ inputs.environment }}" >> $GITHUB_OUTPUT
+    - id: step2
+      run: echo "Results in Project ID: $project_id" >> $GITHUB_OUTPUT
+    - id: step3
+      run: echo "Action selected : $action" >> $GITHUB_OUTPUT
+    - id: step4
+      run: echo "Results in File used: $project_id" >> $GITHUB_OUTPUT
+    - id: step5
+      run: echo "json_file: $json_file" >> $GITHUB_OUTPUT
+    - id: step6
+      run: echo "config file: $config_file" >> $GITHUB_OUTPUT
