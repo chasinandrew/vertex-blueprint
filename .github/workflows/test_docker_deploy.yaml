@@ -23,7 +23,7 @@ env:
   GKE_ZONE: us-central1   # TODO: update to cluster zone
   DEPLOYMENT_NAME: pipelinev1-test # TODO: update to deployment name
   REPOSITORY: quickstart-docker-repo # TODO: update to Artifact Registry docker repository
-  IMAGE: python:latest # TODO: update image name
+  IMAGE: python # TODO: update image name
 
 jobs:
   setup-build-publish-deploy:
