@@ -45,7 +45,8 @@ jobs:
     #   #   #add promotion logic here
     #   #   ACTION: promote
     steps:
-      - run: |
+    - name: Echo Vars
+      run: |
         echo "environment selected : $ENV_SELECTED"
         echo "Translates to Project ID: $PROJECT_ID"
         echo "Action selected : $ACTION"
