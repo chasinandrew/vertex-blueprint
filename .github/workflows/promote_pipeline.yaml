@@ -26,37 +26,43 @@ jobs:
       output3: ${{ steps.step3.outputs.* }}
       output4: ${{ steps.step4.outputs.* }}
       output5: ${{ steps.step5.outputs.* }}
-      output6: ${{ steps.step6.outputs.* }}
       
     steps:
     - id: step1
-      run: echo "environment selected : ${{ inputs.environment }}" >> $GITHUB_OUTPUT
+      run: echo "environment selected : $ENV_SELECTED" >> $GITHUB_OUTPUT
     - id: step2
-      run: echo "Results in Project ID: $project_id" >> $GITHUB_OUTPUT
+      run: echo "Translates to Project ID: $PROJECT_ID" >> $GITHUB_OUTPUT
     - id: step3
-      run: echo "Action selected : $action" >> $GITHUB_OUTPUT
+      run: echo "Action selected : $ACTION" >> $GITHUB_OUTPUT
     - id: step4
-      run: echo "Results in File used: $project_id" >> $GITHUB_OUTPUT
+      run: echo "json_file: $JSON_FILE" >> $GITHUB_OUTPUT
     - id: step5
-      run: echo "json_file: $json_file" >> $GITHUB_OUTPUT
-    - id: step6
-      run: echo "config file: $config_file" >> $GITHUB_OUTPUT
+      run: echo "config file: $CONFIG_FILE" >> $GITHUB_OUTPUT
+
+    env:
+       ENV_SELECTED: ${{ inputs.environment }}"
+       PROJECT_ID: $PROJECT_ID
+       ACTION: $ACTION
+       JSON_FILE: $JSON_FILE
+       CONFIG_FILE: $CONFIG_FILE
+
+    if: ${{ inputs.environment == 'Train' }}
+      PROJECT_ID: hca-demo-dev
+      JSON_FILE: vertex_pipelines/train_pipeline/json_file
+      CONFIG_FILE: vertex_pipelines/train_pipeline/config_file
 
 
-if: ${{ inputs.environment == 'Train' }}
-  project_id: hca-demo-dev
-  json_file: vertex_pipelines/train_pipeline/json_file
-  config_file: vertex_pipelines/train_pipeline/config_file
+    if: ${{ inputs.environment == 'Stage' }}
+      PROJECT_ID: armentrout-dev 
+      JSON_FILE: vertex_pipelines/train_pipeline/json_file
+      CONFIG_FILE: vertex_pipelines/train_pipeline/config_file
 
 
-if: ${{ inputs.environment == 'Stage' }}
-  project_id: armentrout-dev 
-  json_file: vertex_pipelines/train_pipeline/json_file
-  config_file: vertex_pipelines/train_pipeline/config_file
+    if: ${{ inputs.action == 'Build the environment's Pipeline' }}
+          #add build logic here
+        ACTION: build
 
+    if: ${{ inputs.action == 'Promote this environment's Pipeline to the Next Environment' }}
+          #add promotion logic here
+        ACTION: promote
 
-if: ${{ inputs.action == 'Build the environment's Pipeline' }}
-      #add build logic here
-
-if: ${{ inputs.action == 'Promote this environment's Pipeline to the Next Environment' }}
-      #add promotion logic here
