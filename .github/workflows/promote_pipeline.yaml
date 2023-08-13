@@ -20,25 +20,6 @@ on:
 
 jobs:
     runs-on: ubuntu-latest
-      
-        if: ${{ inputs.environment == 'Train' }}
-          project_id: hca-demo-dev
-          json_file: vertex_pipelines/train_pipeline/json_file
-          config_file: vertex_pipelines/train_pipeline/config_file
-
-
-        if: ${{ inputs.environment == 'Stage' }}
-          project_id: armentrout-dev 
-          json_file: vertex_pipelines/train_pipeline/json_file
-          config_file: vertex_pipelines/train_pipeline/config_file
-
-
-        if: ${{ inputs.action == 'Build the environment's Pipeline' }}
-              #add build logic here
-
-        if: ${{ inputs.action == 'Promote this environment's Pipeline to the Next Environment' }}
-              #add promotion logic here
-
     outputs:
       output1: ${{ steps.step1.outputs.* }}
       output2: ${{ steps.step2.outputs.* }}
@@ -60,3 +41,22 @@ jobs:
       run: echo "json_file: $json_file" >> $GITHUB_OUTPUT
     - id: step6
       run: echo "config file: $config_file" >> $GITHUB_OUTPUT
+
+
+if: ${{ inputs.environment == 'Train' }}
+  project_id: hca-demo-dev
+  json_file: vertex_pipelines/train_pipeline/json_file
+  config_file: vertex_pipelines/train_pipeline/config_file
+
+
+if: ${{ inputs.environment == 'Stage' }}
+  project_id: armentrout-dev 
+  json_file: vertex_pipelines/train_pipeline/json_file
+  config_file: vertex_pipelines/train_pipeline/config_file
+
+
+if: ${{ inputs.action == 'Build the environment's Pipeline' }}
+      #add build logic here
+
+if: ${{ inputs.action == 'Promote this environment's Pipeline to the Next Environment' }}
+      #add promotion logic here
