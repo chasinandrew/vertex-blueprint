@@ -19,7 +19,32 @@ on:
           #   type: environment
 
 jobs:
+  log-the-inputs:
     runs-on: ubuntu-latest
+    steps:
+       - run: |
+          echo "environment selected : $ENV_SELECTED"
+          echo "Translates to Project ID: $PROJECT_ID"
+          echo "Action selected : $ACTION"
+          echo "json_file: $JSON_FILE"
+          echo "config file: $CONFIG_FILE"
+        env:
+          ENV_SELECTED: ${{ inputs.environment }}"
+          if: ${{ inputs.environment == 'Train' }}
+            PROJECT_ID: hca-demo-dev
+            JSON_FILE: vertex_pipelines/train_pipeline/json_file
+            CONFIG_FILE: vertex_pipelines/train_pipeline/config_file
+          if: ${{ inputs.environment == 'Stage' }}
+            PROJECT_ID: armentrout-dev 
+            JSON_FILE: vertex_pipelines/train_pipeline/json_file
+            CONFIG_FILE: vertex_pipelines/train_pipeline/config_file
+          if: ${{ inputs.action == 'Build the environment's Pipeline' }}
+            #add build logic here
+            ACTION: build
+          if: ${{ inputs.action == 'Promote this environment's Pipeline to the Next Environment' }}
+            #add promotion logic here
+            ACTION: promote
+
     # outputs:
     #   output1: ${{ steps.step1.outputs.* }}
     #   output2: ${{ steps.step2.outputs.* }}
@@ -39,38 +64,7 @@ jobs:
     # - id: step5
     #   run: echo "config file: $CONFIG_FILE" >> $GITHUB_OUTPUT
 
-    steps:
-       - run: |
-          echo "environment selected : $ENV_SELECTED"
-          echo "Translates to Project ID: $PROJECT_ID"
-          echo "Action selected : $ACTION"
-          echo "json_file: $JSON_FILE"
-          echo "config file: $CONFIG_FILE"
-
-        env:
-          ENV_SELECTED: ${{ inputs.environment }}"
           # PROJECT_ID: $PROJECT_ID
           # ACTION: $ACTION
           # JSON_FILE: $JSON_FILE
           # CONFIG_FILE: $CONFIG_FILE
-
-          if: ${{ inputs.environment == 'Train' }}
-            PROJECT_ID: hca-demo-dev
-            JSON_FILE: vertex_pipelines/train_pipeline/json_file
-            CONFIG_FILE: vertex_pipelines/train_pipeline/config_file
-
-
-          if: ${{ inputs.environment == 'Stage' }}
-            PROJECT_ID: armentrout-dev 
-            JSON_FILE: vertex_pipelines/train_pipeline/json_file
-            CONFIG_FILE: vertex_pipelines/train_pipeline/config_file
-
-
-          if: ${{ inputs.action == 'Build the environment's Pipeline' }}
-                #add build logic here
-              ACTION: build
-
-          if: ${{ inputs.action == 'Promote this environment's Pipeline to the Next Environment' }}
-                #add promotion logic here
-              ACTION: promote
-
