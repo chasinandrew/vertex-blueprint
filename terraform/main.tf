@@ -153,7 +153,7 @@ module "dataset" {
   # TODO: check if DS tables need to be provisioned
 }
 
-module "vertex-ai-workbench" {
+module "vertex-ai-workbench" { # TODO - SEA- review and use for storage buckets, BQ assets
   for_each = module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev" ? (
   { for n in local.notebooks : "${n.user}:${n.image_family}" => n }) : ({})
   source = "./modules/vertex-notebooks"
