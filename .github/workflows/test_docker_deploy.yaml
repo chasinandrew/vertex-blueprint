@@ -24,6 +24,7 @@ env:
   DEPLOYMENT_NAME: pipelinev4-test # TODO: update to deployment name
   REPOSITORY: quickstart-docker-repo # TODO: update to Artifact Registry docker repository
   IMAGE: quickstart-image # TODO: update image name
+  TAG: tag1
 
 jobs:
   setup-build-publish-deploy:
@@ -91,6 +92,6 @@ jobs:
     #     kubectl get services -o wide
     - name: Deploy
       run: |-
-        kubectl create deployment $DEPLOYMENT_NAME --image=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE
+        kubectl create deployment $DEPLOYMENT_NAME --image=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$TAG
         kubectl scale deployment $DEPLOYMENT_NAME --replicas=3
         kubectl autoscale deployment $DEPLOYMENT_NAME --cpu-percent=80 --min=1 --max=5
