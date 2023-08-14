@@ -21,7 +21,7 @@ env:
   GAR_LOCATION: us-central1 # TODO: update region of the Artifact Registry
   GKE_CLUSTER: pipeline-cluster-1    # TODO: update to cluster name
   GKE_ZONE: us-central1   # TODO: update to cluster zone
-  DEPLOYMENT_NAME: pipelinev2-test # TODO: update to deployment name
+  DEPLOYMENT_NAME: pipelinev4-test # TODO: update to deployment name
   REPOSITORY: quickstart-docker-repo # TODO: update to Artifact Registry docker repository
   IMAGE: quickstart-image # TODO: update image name
 
