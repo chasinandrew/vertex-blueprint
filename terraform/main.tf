@@ -84,7 +84,7 @@ module "vertex-ai-workbench" {
 
   machine_type = each.value.machine_type
   vm_image_config = {
-    project      = var.deeplearning_project 
+    project      = var.deeplearning_project
     image_family = each.value.image_family
   }
 
@@ -136,15 +136,15 @@ resource "google_project_iam_member" "image_user" {
 }
 
 module "iam_project_roles" {
-  source      = "./modules/iam"
+  source = "./modules/iam"
   for_each = module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev" ? (
   { for n in local.notebooks : "${n.user}:${n.image_family}" => n }) : ({})
-  project_id = var.gcp_project_id
+  project_id  = var.gcp_project_id
   entity_type = "project"
   entities    = [var.gcp_project_id]
 
   bindings_by_principal = {
-    module.vertex-ai-workbench["${n.user}:${n.image_family}"].sa_notebooks = [
+    module.vertex-ai-workbench["${each.value.user}:${each.value.image_family}"].sa_notebooks = [
       "roles/storage.admin",
       "roles/aiplatform.user",
       "roles/iam.serviceAccountUser",

@@ -11,7 +11,7 @@ variable "bucket_name" { # TODO: derived
   default     = "gcp-dsa-gcs"
 }
 
-variable "bucket_sa_display_name" { 
+variable "bucket_sa_display_name" {
   type        = string
   description = "Display name for bucket Service Account"
   default     = "GCS Service Account for DSA"
