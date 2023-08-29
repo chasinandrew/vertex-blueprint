@@ -48,6 +48,7 @@ variable "naming_prefix" {
     condition     = can(regex("^[-_a-zA-Z0-9]", var.naming_prefix))
     error_message = "The value of naming_prefix must only contain alphanumeric, dash, and underscore."
   }
+  default = "test"
 }
 
 variable "format" {

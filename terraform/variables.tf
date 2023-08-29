@@ -9,14 +9,12 @@ variable "bucket_name" { # TODO: derived
   type        = string
   description = "Bucket name for notebooks"
   default     = "gcp-dsa-gcs"
-  #TODO: verify validation done by bucket module
 }
 
-variable "bucket_sa_display_name" { # TODO: default
+variable "bucket_sa_display_name" {
   type        = string
   description = "Display name for bucket Service Account"
   default     = "GCS Service Account for DSA"
-  #TODO: verify validation done by bucket module
 }
 
 variable "gcp_project_id" {
@@ -30,9 +28,10 @@ variable "gcp_region" {
   description = "Location for GCP Resource Deployment"
 }
 
-variable "host_project_id" { # default
+variable "host_project_id" {
   type        = string
   description = "Shared VPC Host Project for Notebook"
+  default     = null
 }
 
 variable "network" { # default
@@ -72,6 +71,33 @@ variable "artifact_registry_admin_group" {
   description = "List of users to assign roles/artifactregistry.admin role"
   default     = []
 }
+variable "artifact_registry_description" {
+  type        = string
+  description = "Artifact Registry for Vertex AI."
+  default     = "Artifact Registry for Vertex AI."
+}
+
+variable "artifact_registry_format" {
+  type        = string
+  description = "Default format for Artifact Registry rep"
+  default     = "DOCKER"
+}
+
+#TODO: include more options for vars
+variable "buckets" {
+  type = list(map(string))
+  description = "List of buckets."
+}
+
+variable "datasets" {
+  type = list(object({
+    user_group  = list(string)
+    admin_group = list(string)
+    ml_group    = list(string)
+    dataset_id  = string
+  }))
+  description = "List of datasets."
+}
 
 variable "notebooks" {
   type        = list(map(string))
@@ -93,31 +119,6 @@ variable "notebooks" {
 variable "labels" {
   type        = map(string)
   description = "Input labels from cloud workspace"
-}
-
-variable "dsa_services" {
-  type        = map(string)
-  description = "Input variables for reference architecture - dataset, artifact registry, feature store"
-  validation {
-    condition = (
-      can(var.dsa_services["dataset_id_prefix"]) &&
-      can(regex("^[0-9A-Za-z_]+$", var.dsa_services["dataset_id_prefix"]))
-    )
-    error_message = "A dataset ID prefix is required and it can contain letters (uppercase or lowercase), numbers, and underscores."
-  }
-  validation {
-    condition = (
-      can(var.dsa_services["artifact_registry_naming_prefix"]) &&
-      var.dsa_services["artifact_registry_naming_prefix"] == lower(var.dsa_services["artifact_registry_naming_prefix"])
-    )
-    error_message = "A naming prefix for Artifact Registry is required and it must be all-lowercase."
-  }
-}
-
-variable "artifact_registry_default_format" {
-  type        = string
-  description = "Default format for Artifact Registry rep"
-  default     = "DOCKER"
 }
 
 variable "deeplearning_project" {

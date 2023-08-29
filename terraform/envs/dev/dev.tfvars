@@ -11,16 +11,11 @@ labels = {
   app_environment = "dev"
 }
 
-host_project_id      = "arched-inkwell-368821"
-network              = "default"
-deeplearning_project = "hca-demo-dev"
-user_domain          = "google.com"
+#TODO: default 
+host_project_id = "arched-inkwell-368821"
+network         = "default"
+user_domain     = "google.com"
 
-dsa_services = {
-  dataset_id_prefix               = "hin_dsa"
-  artifact_registry_naming_prefix = "docker-repo"
-  bucket_suffix                   = "4dd3aa"
-}
 notebooks = [
   {
     user                = "andrewchasin"
@@ -28,18 +23,43 @@ notebooks = [
     zone                = "us-east4-b"
     image_family        = "common-cpu-notebooks-debian-10"
     post_startup_script = ""
+  },
+  {
+    user                = "rawanbadawi"
+    machine_type        = "n1-standard-4"
+    zone                = "us-east4-b"
+    image_family        = "common-cpu-notebooks-debian-10"
+    post_startup_script = ""
   }
-  #   {
-  #     user                = "otw4939"
-  #     machine_type        = "n1-standard-1"
-  #     zone                = "us-east4-a"
-  #     image_family        = "common-cpu-notebooks-debian-10"
-  #     post_startup_script = "gs://dsa-dev-notebook-startup/deb-notebook-test-bucket/startuplab2.sh"
-  #   },
-  #   {
-  #     user                = "cax4817"
-  #     machine_type        = "n1-standard-4"
-  #     image_family        = "tf-ent-2-8-cpu-ubuntu-2004"
-  #     post_startup_script = "gs://dsa-dev-notebook-startup/deb-notebook-test-bucket/startuplab2.sh"
-  #   }
 ]
+
+buckets = [
+  {
+    bucket_name = "bucket-one"
+  },
+  {
+    bucket_name = "bucket-two"
+  }
+]
+
+datasets = [
+  {
+    dataset_id  = "dataset-one"
+    user_group  = ["group:test@andrewchasin.joonix.net"]
+    admin_group = ["group:test@andrewchasin.joonix.net"]
+    ml_group    = ["group:test@andrewchasin.joonix.net"]
+  },
+  {
+    dataset_id  = "dataset-two"
+    user_group  = ["group:test@andrewchasin.joonix.net"]
+    admin_group = ["group:test@andrewchasin.joonix.net"]
+    ml_group    = ["group:test@andrewchasin.joonix.net"]
+  }
+]
+
+secrets = [
+  "SECRET_ONE",
+  "SECRET_TWO",
+  "SECRET_THREE"
+]
+
