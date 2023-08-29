@@ -83,20 +83,26 @@ variable "artifact_registry_format" {
   default     = "DOCKER"
 }
 
+#TODO: include more options for vars
 variable "buckets" {
-  type        = list(map(string))
+  type = list(object({
+    bucket_name        = list(string)
+    sa_display_name    = string
+    sa_name            = string
+    bucket_viewers     = list(string)
+    bucket_admins      = list(string)
+    bucket_creators    = list(string)
+    num_newer_versions = number
+  }))
   description = "List of buckets."
 }
 
 variable "datasets" {
   type = list(object({
-    # project_id          = string
-    # labels              = list(map(string))
-    user_group          = list(string)
-    admin_group         = list(string)
-    ml_group            = list(string)
-    dataset_id          = string
-    # protect_from_delete = bool
+    user_group  = list(string)
+    admin_group = list(string)
+    ml_group    = list(string)
+    dataset_id  = string
   }))
   description = "List of datasets."
 }
