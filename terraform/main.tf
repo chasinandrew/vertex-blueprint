@@ -139,6 +139,7 @@ module "iam_project_roles" {
   source      = "./modules/iam"
   for_each = module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev" ? (
   { for n in local.notebooks : "${n.user}:${n.image_family}" => n }) : ({})
+  project_id = var.gcp_project_id
   entity_type = "project"
   entities    = [var.gcp_project_id]
 
