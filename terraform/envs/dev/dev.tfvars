@@ -35,10 +35,10 @@ notebooks = [
 
 buckets = [
   {
-    bucket_name = ""
+    bucket_name = "hca-bucket-s"
   },
   {
-    bucket_name = "bucket-two"
+    bucket_name = "hca-bucket-t"
   }
 ]
 
