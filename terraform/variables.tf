@@ -85,15 +85,7 @@ variable "artifact_registry_format" {
 
 #TODO: include more options for vars
 variable "buckets" {
-  type = list(object({
-    bucket_name        = list(string)
-    sa_display_name    = string
-    sa_name            = string
-    bucket_viewers     = list(string)
-    bucket_admins      = list(string)
-    bucket_creators    = list(string)
-    num_newer_versions = number
-  }))
+  type = list(map(string))
   description = "List of buckets."
 }
 
