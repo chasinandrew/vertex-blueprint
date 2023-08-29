@@ -65,7 +65,7 @@ module "dataset" {
   labels              = module.tagging.metadata
   user_group          = try(each.value.user_group, "")
   admin_group         = try(each.value.admin_group, [""])
-  ml_group            = try(each.value.ml_group, [""])
+  ml_group            = try(each.value.ml_group, "")
   dataset_id          = try(each.value.dataset_id, [""])
   protect_from_delete = true
 }
@@ -135,21 +135,21 @@ resource "google_project_iam_member" "image_user" {
   member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-notebooks.iam.gserviceaccount.com"
 }
 
-module "iam_project_roles" {
-  source = "./modules/iam"
-  for_each = module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev" ? (
-  { for n in local.notebooks : "${n.user}:${n.image_family}" => n }) : ({})
-  project_id  = var.gcp_project_id
-  entity_type = "project"
-  entities    = [var.gcp_project_id]
+# module "iam_project_roles" {
+#   source = "./modules/iam"
+#   for_each = module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev" ? (
+#   { for n in local.notebooks : "${n.user}:${n.image_family}" => n }) : ({})
+#   project_id  = var.gcp_project_id
+#   entity_type = "project"
+#   entities    = [var.gcp_project_id]
 
-  bindings_by_principal = {
-    module.vertex-ai-workbench["${each.value.user}:${each.value.image_family}"].sa_notebooks = [
-      "roles/storage.admin",
-      "roles/aiplatform.user",
-      "roles/iam.serviceAccountUser",
-      "roles/bigquery.user",
-      "roles/bigquery.dataEditor"
-    ]
-  }
-}
+#   bindings_by_principal = {
+#     module.vertex-ai-workbench["${each.value.user}:${each.value.image_family}"].sa_notebooks = [
+#       "roles/storage.admin",
+#       "roles/aiplatform.user",
+#       "roles/iam.serviceAccountUser",
+#       "roles/bigquery.user",
+#       "roles/bigquery.dataEditor"
+#     ]
+#   }
+# }
