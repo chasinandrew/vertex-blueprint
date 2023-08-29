@@ -63,7 +63,7 @@ module "dataset" {
   for_each            = { for obj in var.datasets : obj.dataset_id => obj }
   project_id          = var.gcp_project_id
   labels              = module.tagging.metadata
-  user_group          = try(each.value.user_group, [""])
+  user_group          = try(each.value.user_group, "")
   admin_group         = try(each.value.admin_group, [""])
   ml_group            = try(each.value.ml_group, [""])
   dataset_id          = try(each.value.dataset_id, [""])
@@ -91,7 +91,7 @@ module "vertex-ai-workbench" {
   accelerator_config  = each.value.accelerator_config
   host_project_id     = var.host_project_id
   network             = var.network
-  subnet              = format("%s-%s-%s", var.gcp_project_id, "notebooks", var.gcp_region)
+  subnet              = format("%s-%s-%s", var.gcp_project_id, "notebooks", var.gcp_region) #TODO: will they be on different subnets? 
   metadata_optional   = var.metadata
   post_startup_script = each.value.post_startup_script
 }
@@ -137,13 +137,13 @@ resource "google_project_iam_member" "image_user" {
 
 module "iam_project_roles" {
   source      = "./modules/iam"
-  count       = length(local.notebooks)
-  project_id  = var.gcp_project_id
+  for_each = module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev" ? (
+  { for n in local.notebooks : "${n.user}:${n.image_family}" => n }) : ({})
   entity_type = "project"
   entities    = [var.gcp_project_id]
 
   bindings_by_principal = {
-    module.vertex-ai-workbench["${count.index}"].sa_notebooks = [
+    module.vertex-ai-workbench["${n.user}:${n.image_family}"].sa_notebooks = [
       "roles/storage.admin",
       "roles/aiplatform.user",
       "roles/iam.serviceAccountUser",
