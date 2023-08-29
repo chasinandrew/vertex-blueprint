@@ -74,7 +74,7 @@ module "dataset" {
   dataset_id          = each.value.dataset_id
   protect_from_delete = true
 }
-
+#
 module "vertex-ai-workbench" {
   for_each = module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev" ? (
   { for n in local.notebooks : "${n.user}:${n.image_family}" => n }) : ({})
