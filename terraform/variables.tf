@@ -71,6 +71,11 @@ variable "artifact_registry_admin_group" {
   description = "List of users to assign roles/artifactregistry.admin role"
   default     = []
 }
+variable "artifact_registry_description" {
+  type        = string
+  description = "Artifact Registry for Vertex AI."
+  default     = "Artifact Registry for Vertex AI."
+}
 
 variable "artifact_registry_format" {
   type        = string
