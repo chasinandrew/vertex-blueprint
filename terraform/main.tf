@@ -9,30 +9,8 @@
 #   - notebooks
 #    - dsa_services
 
-resource "random_id" "random_suffix" {
-  byte_length = 3
-}
 
 locals {
-  host_project_id = var.host_project_id 
-  network         = var.network
-  subnet = format("%s-%s-%s",
-    var.gcp_project_id,
-    "notebooks",
-    var.gcp_region
-  )
-
-  dataset_dataset_id                 = format("%s_%s", var.dsa_services.dataset_id_prefix, random_id.random_suffix.hex)
-  artifact_registry_naming_prefix    = var.dsa_services.artifact_registry_naming_prefix
-  artifact_registry_description      = try(var.dsa_services.artifact_registry_description, null)
-  artifact_registry_format           = try(var.dsa_services.artifact_registry_format, var.artifact_registry_default_format)
-  artifact_registry_reader_group     = var.artifact_registry_reader_group
-  artifact_registry_writer_group     = var.artifact_registry_writer_group
-  artifact_registry_repo_admin_group = var.artifact_registry_repo_admin_group
-  artifact_registry_admin_group      = var.artifact_registry_admin_group
-  node_count                         = try(var.dsa_services.feature_store_node_count, 1)
-  force_destroy                      = true
-
   # Iterate over input variable and default any missing optional fields
   notebooks = [
     for nb in var.notebooks : {
@@ -47,17 +25,6 @@ locals {
       post_startup_script = try(nb.post_startup_script, null)
     }
   ]
-
-  bucket_name = format("%s-%s", var.bucket_name, var.dsa_services.bucket_suffix) # TODO: dynamic bucket name
-  # bucket_sa_name         = format("%s-sa", local.bucket_name)
-  bucket_sa_display_name = var.bucket_sa_display_name
-
-  dataset = {
-    user_group  = []
-    admin_group = []
-    ml_group    = []
-    dataset_id  = local.dataset_dataset_id
-  }
 
   feature_store = {
     node_count    = local.node_count
@@ -88,24 +55,23 @@ module "storage" {
   bucket_labels      = module.tagging.metadata
   bucket_name        = [format("%s-%s", each.value.bucket_name, var.dsa_services.bucket_suffix)]
   sa_display_name    = try(each.value.sa_display_name, format("%s Service Account", each.value.bucket_name))
-  sa_name            = try(each.value.sa_name, format("%s-bucket-sa", var.gcp_project_id))
-  bucket_viewers     = try(each.value.bucket_viewers, [format("serviceAccount:%s", module.vertex-ai-workbench["andrewchasin:common-cpu-notebooks-debian-10"].sa_notebooks)])
+  sa_name            = try(each.value.sa_name, format("%s-bucket-sa-%s", var.gcp_project_id, index(var.buckets, each.value) + 1))
+  bucket_viewers     = try(each.value.bucket_viewers, [""])
   bucket_admins      = try(each.value.bucket_admins, [""])
   bucket_creators    = try(each.value.bucket_creators, [""])
   num_newer_versions = try(each.value.num_newer_versions, 1)
-  force_destroy      = try(each.value.force_destroy, false)
+  force_destroy      = false
 }
 
-# A single BigQuery dataset shared with all initiative team members. Each DS will have its own table.
 module "dataset" {
-  source = "./modules/bigquery-dataset"
-
+  source              = "./modules/bigquery-dataset"
+  for_each            = { for obj in var.datasets : obj.dataset_id => obj }
   project_id          = var.gcp_project_id
   labels              = module.tagging.metadata
-  user_group          = local.dataset.user_group
-  admin_group         = local.dataset.admin_group
-  ml_group            = local.dataset.ml_group
-  dataset_id          = local.dataset.dataset_id
+  user_group          = each.value.user_group
+  admin_group         = each.value.admin_group
+  ml_group            = each.value.ml_group
+  dataset_id          = each.value.dataset_id
   protect_from_delete = true
 }
 
@@ -129,22 +95,19 @@ module "vertex-ai-workbench" {
 
   accelerator_config  = each.value.accelerator_config
   host_project_id     = var.host_project_id
-  network             = local.network
-  subnet              = local.subnet
+  network             = var.network
+  subnet              = format("%s-%s-%s", var.gcp_project_id, "notebooks", var.gcp_region)
   metadata_optional   = var.metadata
   post_startup_script = each.value.post_startup_script
 }
 
 # Single repository with all initiative team members
 module "artifact-registry" {
-  source     = "./modules/artifact-registry"
-  project_id = var.gcp_project_id
-  labels     = module.tagging.metadata
-
-  naming_prefix = local.artifact_registry.naming_prefix
-  description   = local.artifact_registry.description
-  format        = local.artifact_registry.format # TODO: check if this can be defaulted to DOCKER
-
+  source                             = "./modules/artifact-registry"
+  project_id                         = var.gcp_project_id
+  labels                             = module.tagging.metadata
+  description                        = var.artifact_registry_description
+  format                             = var.artifact_registry_format
   artifact_registry_reader_group     = var.artifact_registry_reader_group
   artifact_registry_writer_group     = var.artifact_registry_writer_group
   artifact_registry_repo_admin_group = var.artifact_registry_repo_admin_group
@@ -152,16 +115,15 @@ module "artifact-registry" {
 }
 
 module "feature-store" {
-  source = "./modules/feature-store"
+  source          = "./modules/feature-store"
   project_id      = var.gcp_project_id
   labels          = module.tagging.metadata
   app_code        = module.tagging.metadata.app_code
   app_environment = module.tagging.metadata.app_environment
-  node_count      = local.feature_store.node_count
-  force_destroy   = local.feature_store.force_destroy
+  node_count      = 2
+  force_destroy   = false
 }
 
-#TODO: add to hca repo 
 data "google_project" "project" {
   project_id = var.gcp_project_id
 }

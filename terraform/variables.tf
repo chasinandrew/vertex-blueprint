@@ -30,9 +30,10 @@ variable "gcp_region" {
   description = "Location for GCP Resource Deployment"
 }
 
-variable "host_project_id" { # default
+variable "host_project_id" {
   type        = string
   description = "Shared VPC Host Project for Notebook"
+  default     = null
 }
 
 variable "network" { # default
@@ -73,9 +74,20 @@ variable "artifact_registry_admin_group" {
   default     = []
 }
 
+variable "artifact_registry_format" {
+  type        = string
+  description = "Default format for Artifact Registry rep"
+  default     = "DOCKER"
+}
+
 variable "buckets" {
   type        = list(map(string))
-  description = "List of buckets"
+  description = "List of buckets."
+}
+
+variable "datasets" {
+  type        = list(map(string))
+  description = "List of datasets."
 }
 
 variable "notebooks" {
@@ -100,30 +112,17 @@ variable "labels" {
   description = "Input labels from cloud workspace"
 }
 
-variable "dsa_services" {
-  type        = map(string)
-  description = "Input variables for reference architecture - dataset, artifact registry, feature store"
+variable "dataset_id" {
+  type        = string
+  description = "Prefix to the dataset ID. "
   validation {
     condition = (
-      can(var.dsa_services["dataset_id_prefix"]) &&
-      can(regex("^[0-9A-Za-z_]+$", var.dsa_services["dataset_id_prefix"]))
+      can(regex("^[0-9A-Za-z_]+$", var.dataset_id_prefix))
     )
-    error_message = "A dataset ID prefix is required and it can contain letters (uppercase or lowercase), numbers, and underscores."
-  }
-  validation {
-    condition = (
-      can(var.dsa_services["artifact_registry_naming_prefix"]) &&
-      var.dsa_services["artifact_registry_naming_prefix"] == lower(var.dsa_services["artifact_registry_naming_prefix"])
-    )
-    error_message = "A naming prefix for Artifact Registry is required and it must be all-lowercase."
+    error_message = "A dataset ID prefix is required and it can contain letters (uppercase or lowercase), numbers, and underscores"
   }
 }
 
-variable "artifact_registry_default_format" {
-  type        = string
-  description = "Default format for Artifact Registry rep"
-  default     = "DOCKER"
-}
 
 variable "deeplearning_project" {
   type        = string
