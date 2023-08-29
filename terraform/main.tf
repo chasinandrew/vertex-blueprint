@@ -89,7 +89,7 @@ module "vertex-ai-workbench" {
 
   machine_type = each.value.machine_type
   vm_image_config = {
-    project      = var.deeplearning_project #constant
+    project      = var.deeplearning_project 
     image_family = each.value.image_family
   }
 
