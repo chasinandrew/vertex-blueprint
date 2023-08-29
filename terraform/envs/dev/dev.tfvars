@@ -46,7 +46,7 @@ datasets = [
   {
     dataset_id  = "dataset-one"
     user_group  = "group:test@andrewchasin.joonix.net"
-    admin_group = ["group:test@andrewchasin.joonix.net"]
+    admin_group = "group:test@andrewchasin.joonix.net"
     ml_group    = "group:test@andrewchasin.joonix.net"
   },
   {
