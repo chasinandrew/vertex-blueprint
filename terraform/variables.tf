@@ -9,14 +9,12 @@ variable "bucket_name" { # TODO: derived
   type        = string
   description = "Bucket name for notebooks"
   default     = "gcp-dsa-gcs"
-  #TODO: verify validation done by bucket module
 }
 
-variable "bucket_sa_display_name" { # TODO: default
+variable "bucket_sa_display_name" { 
   type        = string
   description = "Display name for bucket Service Account"
   default     = "GCS Service Account for DSA"
-  #TODO: verify validation done by bucket module
 }
 
 variable "gcp_project_id" {
@@ -117,7 +115,7 @@ variable "dataset_id" {
   description = "Prefix to the dataset ID. "
   validation {
     condition = (
-      can(regex("^[0-9A-Za-z_]+$", var.dataset_id_prefix))
+      can(regex("^[0-9A-Za-z_]+$", var.dataset_id))
     )
     error_message = "A dataset ID prefix is required and it can contain letters (uppercase or lowercase), numbers, and underscores"
   }
