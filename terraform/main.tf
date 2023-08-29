@@ -34,7 +34,7 @@ module "tagging" {
   classification  = var.labels.classification
   cost_id         = var.labels.cost_id
   department_id   = var.labels.department_id
-  project_id      = var.labels.project_id
+  project_id      = var.labels.hca_project_id
   tco_id          = var.labels.tco_id
 
   optional = {
@@ -63,10 +63,10 @@ module "dataset" {
   for_each            = { for obj in var.datasets : obj.dataset_id => obj }
   project_id          = var.gcp_project_id
   labels              = module.tagging.metadata
-  user_group          = each.value.user_group
-  admin_group         = each.value.admin_group
-  ml_group            = each.value.ml_group
-  dataset_id          = each.value.dataset_id
+  user_group          = try(each.value.user_group, [""])
+  admin_group         = try(each.value.admin_group, [""])
+  ml_group            = try(each.value.ml_group, [""])
+  dataset_id          = try(each.value.dataset_id, [""])
   protect_from_delete = true
 }
 #

@@ -115,8 +115,6 @@ variable "labels" {
   description = "Input labels from cloud workspace"
 }
 
-
-
 variable "deeplearning_project" {
   type        = string
   description = "GCP public project hosting deep learning VM images"
