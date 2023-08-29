@@ -115,16 +115,6 @@ variable "labels" {
   description = "Input labels from cloud workspace"
 }
 
-variable "dataset_id" {
-  type        = string
-  description = "Prefix to the dataset ID. "
-  validation {
-    condition = (
-      can(regex("^[0-9A-Za-z_]+$", var.dataset_id))
-    )
-    error_message = "A dataset ID prefix is required and it can contain letters (uppercase or lowercase), numbers, and underscores"
-  }
-}
 
 
 variable "deeplearning_project" {
