@@ -25,7 +25,7 @@ notebooks = [
     post_startup_script = ""
   },
   {
-    user                = "andrewchasin"
+    user                = "rawanbadawi"
     machine_type        = "n1-standard-4"
     zone                = "us-east4-b"
     image_family        = "common-cpu-notebooks-debian-10"
@@ -45,9 +45,9 @@ buckets = [
 datasets = [
   {
     dataset_id  = "dataset-one"
-    user_group  = "group:test@andrewchasin.joonix.net"
-    admin_group = "group:test@andrewchasin.joonix.net"
-    ml_group    = "group:test@andrewchasin.joonix.net"
+    user_group  = ["group:test@andrewchasin.joonix.net"]
+    admin_group = ["group:test@andrewchasin.joonix.net"]
+    ml_group    = ["group:test@andrewchasin.joonix.net"]
   },
   {
     dataset_id = "dataset-two"
