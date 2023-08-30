@@ -11,7 +11,6 @@ labels = {
   app_environment = "dev"
 }
 
-#TODO: default 
 host_project_id = "arched-inkwell-368821"
 network         = "default"
 user_domain     = "google.com"
@@ -46,21 +45,14 @@ buckets = [
 datasets = [
   {
     dataset_id  = "dataset_one"
-    user_group  = ["group:test_priv_read@andrewchasin.joonix.net"]
-    admin_group = ["group:test_priv_read@andrewchasin.joonix.net"]
-    ml_group    = ["group:test_priv_read@andrewchasin.joonix.net"]
+    # user_group  = ["group:test_priv_read@andrewchasin.joonix.net"]
+    # admin_group = ["group:test_priv_read@andrewchasin.joonix.net"]
+    # ml_group    = ["group:test_priv_read@andrewchasin.joonix.net"]
   },
   {
     dataset_id  = "dataset_two"
-    user_group  = ["group:test_priv_read@andrewchasin.joonix.net"]
-    admin_group = ["group:test_priv_read@andrewchasin.joonix.net"]
-    ml_group    = ["group:test_priv_read@andrewchasin.joonix.net"]
+    # user_group  = ["group:test_priv_read@andrewchasin.joonix.net"]
+    # admin_group = ["group:test_priv_read@andrewchasin.joonix.net"]
+    # ml_group    = ["group:test_priv_read@andrewchasin.joonix.net"]
   }
 ]
-
-secrets = [
-  "SECRET_ONE",
-  "SECRET_TWO",
-  "SECRET_THREE"
-]
-

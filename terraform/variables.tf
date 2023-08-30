@@ -1,10 +1,3 @@
-#TODO: remove this variable, domain restricted sharing removes the need for this variable validation
-variable "user_domain" {
-  type        = string
-  description = "3-4 ID Domain Name"
-  default     = "hca.corpad.net"
-}
-
 variable "bucket_name" { # TODO: derived
   type        = string
   description = "Bucket name for notebooks"
@@ -83,14 +76,28 @@ variable "artifact_registry_format" {
   default     = "DOCKER"
 }
 
-#TODO: include more options for vars
 variable "buckets" {
-  type        = list(map(string))
+  type = list(object({
+    gcp_project_id     = optional(string)
+    bucket_name        = optional(string)
+    bucket_labels      = optional(map(string))
+    bucket_viewers     = optional(list(string))
+    bucket_admins      = optional(list(string))
+    bucket_creators    = optional(list(string))
+    force_destroy      = optional(bool)
+  }))
   description = "List of buckets."
 }
 
 variable "datasets" {
-  type = list(map(string))
+  type = list(object({
+    project_id  = string
+    labels      = list(map(string))
+    user_group  = optional(list(string))
+    admin_group = optional(list(string))
+    ml_group    = optional(list(string))
+    dataset_id  = string
+  }))
   description = "List of datasets."
 }
 

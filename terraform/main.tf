@@ -42,9 +42,6 @@ module "tagging" {
     region = var.gcp_region
   }
 }
-resource "random_id" "server" {
-  byte_length = 4
-}
 
 module "storage" {
   source             = "./modules/cloud-storage"
