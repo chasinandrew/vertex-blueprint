@@ -90,12 +90,7 @@ variable "buckets" {
 }
 
 variable "datasets" {
-  type = list(object({
-    user_group  = list(string)
-    admin_group = list(string)
-    ml_group    = list(string)
-    dataset_id  = string
-  }))
+  type = list(map(string))
   description = "List of datasets."
 }
 
