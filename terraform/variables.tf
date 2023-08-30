@@ -85,18 +85,18 @@ variable "buckets" {
   type = list(map(string))
 }
 
-# variable "buckets" {
-#   type = list(object({
-#     gcp_project_id     = optional(string)
-#     bucket_name        = optional(string)
-#     bucket_labels      = optional(map(string))
-#     bucket_viewers     = optional(list(string))
-#     bucket_admins      = optional(list(string))
-#     bucket_creators    = optional(list(string))
-#     force_destroy      = optional(bool)
-#   }))
-#   description = "List of buckets."
-# }
+variable "buckets" {
+  type = list(object({
+    gcp_project_id     = optional(string)
+    bucket_name        = optional(string)
+    bucket_labels      = optional(map(string))
+    bucket_viewers     = optional(list(string))
+    bucket_admins      = optional(list(string))
+    bucket_creators    = optional(list(string))
+    force_destroy      = optional(bool)
+  }))
+  description = "List of buckets."
+}
 
 variable "datasets" {
   type = list(object({
