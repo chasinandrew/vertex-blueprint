@@ -24,7 +24,7 @@ resource "google_pubsub_topic" "secret_rotation" {
   message_retention_duration = "86600s"
 }
 
-module "vertex-secrets" {
+module "secrets" {
   source                               = "./modules/secrets"
   for_each                             = { for obj in var.secrets : obj.secret_id => obj }
   project_id                           = var.gcp_project_id
@@ -38,7 +38,7 @@ module "vertex-secrets" {
   secret_accessor_group                = each.value.secret_accessor_group
   pub_sub_topic                        = resource.google_pubsub_topic.secret_rotation.name
   secret_manager_admin_group           = each.value.secret_manager_admin_group
-  secret_manager_accessor_group        = each.value.grant_notebooks_access ? merge(vertex_sas, each.value.secret_accessor_group) : each.value.secret_accessor_group
+  secret_manager_accessor_group        = each.value.grant_notebooks_access ? merge(local.vertex_sas, each.value.secret_accessor_group) : each.value.secret_accessor_group
   secret_manager_viewer_group          = each.value.secret_viewer_group
   secret_manager_version_manager_group = each.value.secret_manager_admin_group
   secret_manager_version_adder_group   = each.value.secret_manager_admin_group
