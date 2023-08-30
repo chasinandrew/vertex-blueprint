@@ -53,7 +53,7 @@ datasets = [
     dataset_id  = "dataset_two"
     user_group  = ["group:test_priv_read@andrewchasin.joonix.net"]
     admin_group = ["group:test_priv_read@andrewchasin.joonix.net"]
-    ml_group    = ["group:test_priv_read@andrewchasin.joonix.net"]
+    # ml_group    = ["group:test_priv_read@andrewchasin.joonix.net"]
   }
 ]
 
