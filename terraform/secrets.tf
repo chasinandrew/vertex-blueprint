@@ -2,13 +2,7 @@
 // Copyright 2023 Google. This software is provided as-is, without warranty or representation for any use or purpose. Your use of it is subject to your agreement with Google.
 //
 
-#  Inputs:
-#   - gcp_project_id
-#   - region
-#   - labels
-#   - notebooks
-#    - dsa_services
-# required to rotate secrets
+# This module is used to create secrets for Data Scientist blueprint usage. 
 
 locals {
   vertex_sas = flatten([for s in module.vertex-ai-workbench : format("%s:%s",
@@ -44,7 +38,7 @@ module "secrets" {
   secret_manager_version_adder_group   = each.value.secret_manager_admin_group
   ignore_secret_change                 = true
   depends_on = [
-    module.vertex-ai-workbench, resource.google_pubsub_topic.secret_rotation
+    module.vertex-ai-workbench, resource.google_pubsub_topic.secret_rotation, time_sleep.wait_60_seconds
   ]
 }
 

@@ -154,3 +154,11 @@ variable "secrets" {
   default     = []
   description = "List of secrets to access."
 }
+
+variable "project_services" {
+
+  type = list(string)
+
+  description = "List of required project services in the blueprint"
+  default     = ["pubsub.googleapis.com", "compute.googleapis.com", "monitoring.googleapis.com", "logging.googleapis.com", "aiplatform.googleapis.com", "containerfilesystem.googleapis.com", "dns.googleapis.com", "iamcredentials.googleapis.com", "iam.googleapis.com", "sts.googleapis.com", "cloudresourcemanager.googleapis.com", "autoscaling.googleapis.com", "notebooks.googleapis.com", "artifactregistry.googleapis.com", "ml.googleapis.com", "dataform.googleapis.com", "serviceusage.googleapis.com", "secretmanager.googleapis.com"]
+}
