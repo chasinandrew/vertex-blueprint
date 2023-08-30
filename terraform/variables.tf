@@ -85,7 +85,7 @@ variable "artifact_registry_format" {
 
 #TODO: include more options for vars
 variable "buckets" {
-  type = list(map(string))
+  type        = list(map(string))
   description = "List of buckets."
 }
 
