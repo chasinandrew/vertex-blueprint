@@ -1,3 +1,8 @@
+
+variable "user_domain" {
+  type = string
+}
+
 variable "bucket_name" { # TODO: derived
   type        = string
   description = "Bucket name for notebooks"
