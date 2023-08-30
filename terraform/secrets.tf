@@ -28,7 +28,7 @@ module "secrets" {
   next_rotation_time                   = timeadd(timestamp(), each.value.rotation_period)
   rotation_period                      = try(each.value.rotation_period)
   expire_time                          = try(each.value.expire_time, "")
-  secret_data                          = ""
+  secret_data                          = "replace-me"
   secret_accessor_group                = each.value.secret_accessor_group
   pub_sub_topic                        = resource.google_pubsub_topic.secret_rotation.name
   secret_manager_admin_group           = each.value.secret_manager_admin_group
