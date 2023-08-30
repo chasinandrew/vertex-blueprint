@@ -28,7 +28,7 @@ locals {
 
 # enable required services for this blueprint
 resource "google_project_service" "project" {
-  for_each = var.project_services
+  for_each = toset(var.project_services)
   project  = var.gcp_project_id
   service  = each.value
 
