@@ -138,3 +138,19 @@ variable "default_zone" {
   description = "Default location for Workbench Notebooks"
   default     = "us-east4-b"
 }
+
+
+variable "secrets" {
+  type = list(object({
+    labels                        = optional(map(string), {})
+    secret_id                     = string
+    rotation_period               = optional(string, "")
+    expire_time                   = optional(string, "")
+    secret_manager_admin_group    = optional(list(string), [])
+    secret_accessor_group         = optional(list(string), [])
+    grant_vertex_workbench_access = optional(bool, false)
+    secret_manager_viewer_group   = optional(list(string), [])
+  }))
+  default     = []
+  description = "List of secrets to access."
+}
