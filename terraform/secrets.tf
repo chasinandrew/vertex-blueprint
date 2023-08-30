@@ -11,7 +11,7 @@
 # required to rotate secrets
 
 locals {
-  vertex_sas = [for s in module.vertex : format("%s:",
+  vertex_sas = [for s in module.vertex-ai-workbench : format("%s:",
     "serviceAccount",
     s.sa_notebooks
   ) if try(s.sa_notebooks != null) || module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev"]
@@ -44,7 +44,7 @@ module "vertex-secrets" {
   secret_manager_version_adder_group   = each.value.secret_manager_admin_group
   ignore_secret_change                 = true
   depends_on = [
-    module.vertex
+    module.vertex-ai-workbench
   ]
 }
 
