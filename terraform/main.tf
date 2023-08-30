@@ -42,6 +42,9 @@ module "tagging" {
     region = var.gcp_region
   }
 }
+resource "random_id" "server" {
+  byte_length = 4
+}
 
 module "storage" {
   source             = "./modules/cloud-storage"
@@ -50,7 +53,7 @@ module "storage" {
   bucket_labels      = module.tagging.metadata
   bucket_name        = [each.value.bucket_name]
   sa_display_name    = try(each.value.sa_display_name, format("%s Service Account", each.value.bucket_name))
-  sa_name            = try(each.value.sa_name, format("%s-bucket-sa-%s", var.gcp_project_id, index(var.buckets, each.value) + 1))
+  sa_name            = try(each.value.sa_name, format("%s-bucket-sa-%s", each.value.bucket_name, index(var.buckets, each.value) + 1))
   bucket_viewers     = try(each.value.bucket_viewers, [""])
   bucket_admins      = try(each.value.bucket_admins, [""])
   bucket_creators    = try(each.value.bucket_creators, [""])
