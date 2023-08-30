@@ -9,7 +9,6 @@
 #   - notebooks
 #    - dsa_services
 
-
 locals {
   # Iterate over input variable and default any missing optional fields
   notebooks = [
@@ -26,6 +25,28 @@ locals {
     }
   ]
 }
+
+# enable required services for this blueprint
+resource "google_project_service" "project" {
+  for_each = toset(var.project_services)
+  project  = var.gcp_project_id
+  service  = each.value
+
+  timeouts {
+    create = "30m"
+    update = "40m"
+  }
+
+  disable_dependent_services = false
+  disable_on_destroy         = false
+
+}
+
+resource "time_sleep" "wait_60_seconds" {
+  depends_on      = [google_project_service.project]
+  create_duration = "60s"
+}
+
 
 module "tagging" {
   source          = "./modules/tagging"
@@ -53,6 +74,10 @@ module "storage" {
   bucket_admins      = try(each.value.bucket_admins, [""])
   bucket_creators    = try(each.value.bucket_creators, [""])
   force_destroy      = false
+
+  depends_on = [
+    time_sleep.wait_60_seconds
+  ]
 }
 
 module "dataset" {
@@ -65,6 +90,10 @@ module "dataset" {
   ml_group            = try(each.value.ml_group, [""])
   dataset_id          = each.value.dataset_id
   protect_from_delete = true
+
+  depends_on = [
+    time_sleep.wait_60_seconds
+  ]
 }
 
 module "vertex-ai-workbench" {
@@ -91,6 +120,9 @@ module "vertex-ai-workbench" {
   subnet              = format("%s-%s-%s", var.gcp_project_id, "notebooks", var.gcp_region) #TODO: will they be on different subnets? 
   metadata_optional   = var.metadata
   post_startup_script = each.value.post_startup_script
+  depends_on = [
+    time_sleep.wait_60_seconds
+  ]
 }
 
 # Single repository with all initiative team members
@@ -104,6 +136,9 @@ module "artifact-registry" {
   artifact_registry_writer_group     = var.artifact_registry_writer_group
   artifact_registry_repo_admin_group = var.artifact_registry_repo_admin_group
   artifact_registry_admin_group      = var.artifact_registry_admin_group
+  depends_on = [
+    time_sleep.wait_60_seconds
+  ]
 }
 
 module "feature-store" {
@@ -114,6 +149,9 @@ module "feature-store" {
   app_environment = module.tagging.metadata.app_environment
   node_count      = 2
   force_destroy   = false
+  depends_on = [
+    time_sleep.wait_60_seconds
+  ]
 }
 
 data "google_project" "project" {
@@ -124,12 +162,18 @@ resource "google_project_iam_member" "shared_vpc" {
   project = var.host_project_id
   role    = "roles/compute.networkUser"
   member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-notebooks.iam.gserviceaccount.com"
+  depends_on = [
+    time_sleep.wait_60_seconds
+  ]
 }
 
 resource "google_project_iam_member" "image_user" {
   project = var.gcp_project_id
   role    = "roles/compute.imageUser"
   member  = "serviceAccount:service-${data.google_project.project.number}@gcp-sa-notebooks.iam.gserviceaccount.com"
+  depends_on = [
+    time_sleep.wait_60_seconds
+  ]
 }
 
 # module "iam_project_roles" {
