@@ -82,10 +82,6 @@ variable "artifact_registry_format" {
 }
 
 variable "buckets" {
-  type = list(map(string))
-}
-
-variable "buckets" {
   type = list(object({
     gcp_project_id     = optional(string)
     bucket_name        = optional(string)
