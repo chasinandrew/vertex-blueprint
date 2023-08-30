@@ -63,17 +63,17 @@ datasets = [
 secrets = [
   {
     secret_id                     = "secret1"
-    secret_manager_admin_group    = ["group:test@andrewchasin.joonix.net"]
-    secret_accessor_group         = ["group:test@andrewchasin.joonix.net"]
-    secret_manager_viewer_group   = ["group:test@andrewchasin.joonix.net"]
+    secret_manager_admin_group    = ["group:test_priv_read@andrewchasin.joonix.net"]
+    secret_accessor_group         = ["group:test_priv_read@andrewchasin.joonix.net"]
+    secret_manager_viewer_group   = ["group:test_priv_read@andrewchasin.joonix.net"]
     grant_vertex_workbench_access = true
 
   },
   {
     secret_id                     = "secret2"
-    secret_manager_admin_group    = ["group:test@andrewchasin.joonix.net"]
-    secret_accessor_group         = ["group:test@andrewchasin.joonix.net"]
-    secret_manager_viewer_group   = ["group:test@andrewchasin.joonix.net"]
+    secret_manager_admin_group    = ["group:test_priv_read@andrewchasin.joonix.net"]
+    secret_accessor_group         = ["group:test_priv_read@andrewchasin.joonix.net"]
+    secret_manager_viewer_group   = ["group:test_priv_read@andrewchasin.joonix.net"]
     grant_vertex_workbench_access = false
 
   }
