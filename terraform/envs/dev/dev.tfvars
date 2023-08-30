@@ -57,9 +57,24 @@ datasets = [
   }
 ]
 
-secrets = [
-  "SECRET_ONE",
-  "SECRET_TWO",
-  "SECRET_THREE"
-]
 
+
+secrets =[
+  {
+    secret_id = "secret1"
+    secret_manager_admin_group = ["group:test@andrewchasin.joonix.net"]
+    secret_accessor_group = ["group:test@andrewchasin.joonix.net"]
+    secret_manager_viewer_group = ["group:test@andrewchasin.joonix.net"]
+    grant_notebooks_access = true
+  
+  },
+    {
+    secret_id = "secret2"
+    secret_manager_admin_group = ["group:test@andrewchasin.joonix.net"]
+    secret_accessor_group = ["group:test@andrewchasin.joonix.net"]
+    secret_manager_viewer_group = ["group:test@andrewchasin.joonix.net"]
+    grant_notebooks_access = false
+  
+  }
+  
+]

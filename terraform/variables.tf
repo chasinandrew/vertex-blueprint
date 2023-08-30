@@ -85,7 +85,7 @@ variable "artifact_registry_format" {
 
 #TODO: include more options for vars
 variable "buckets" {
-  type = list(map(string))
+  type        = list(map(string))
   description = "List of buckets."
 }
 
@@ -137,4 +137,20 @@ variable "default_zone" {
   type        = string
   description = "Default location for Workbench Notebooks"
   default     = "us-east4-b"
+}
+
+
+variable "secrets" {
+  type = list(object({
+    labels                      = optional(map(string), {})
+    secret_id                   = string
+    rotation_period             = optional(string, "")
+    expire_time                 = optional(string, "")
+    secret_manager_admin_group  = optional(list(string), [])
+    secret_accessor_group       = optional(list(string), [])
+    grant_notebooks_access      = optional(bool, false)
+    secret_manager_viewer_group = optional(list(string), [])
+  }))
+  default     = []
+  description = "List of secrets to access."
 }
