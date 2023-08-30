@@ -35,25 +35,26 @@ notebooks = [
 
 buckets = [
   {
-    bucket_name = "bucket-one"
+    bucket_name = "amc-bucket-s"
+    sa_name     = "bucekt-sa"
   },
   {
-    bucket_name = "bucket-two"
+    bucket_name = "amc-bucket-t"
   }
 ]
 
 datasets = [
   {
-    dataset_id  = "dataset-one"
-    user_group  = ["group:test@andrewchasin.joonix.net"]
-    admin_group = ["group:test@andrewchasin.joonix.net"]
-    ml_group    = ["group:test@andrewchasin.joonix.net"]
+    dataset_id  = "dataset_one"
+    user_group  = ["group:test_priv_read@andrewchasin.joonix.net"]
+    admin_group = ["group:test_priv_read@andrewchasin.joonix.net"]
+    ml_group    = ["group:test_priv_read@andrewchasin.joonix.net"]
   },
   {
-    dataset_id  = "dataset-two"
-    user_group  = ["group:test@andrewchasin.joonix.net"]
-    admin_group = ["group:test@andrewchasin.joonix.net"]
-    ml_group    = ["group:test@andrewchasin.joonix.net"]
+    dataset_id  = "dataset_two"
+    user_group  = ["group:test_priv_read@andrewchasin.joonix.net"]
+    admin_group = ["group:test_priv_read@andrewchasin.joonix.net"]
+    ml_group    = ["group:test_priv_read@andrewchasin.joonix.net"]
   }
 ]
 
