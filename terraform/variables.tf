@@ -96,8 +96,8 @@ variable "buckets" {
 
 variable "datasets" {
   type = list(object({
-    project_id  = string
-    labels      = list(map(string))
+    project_id  = optional(string)
+    labels      = optional(list(map(string)))
     user_group  = optional(list(string))
     admin_group = optional(list(string))
     ml_group    = optional(list(string))
