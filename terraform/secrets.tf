@@ -44,7 +44,7 @@ module "secrets" {
   secret_manager_version_adder_group   = each.value.secret_manager_admin_group
   ignore_secret_change                 = true
   depends_on = [
-    module.vertex-ai-workbench, resource.google_pubsub_topic.id
+    module.vertex-ai-workbench, resource.google_pubsub_topic
   ]
 }
 
