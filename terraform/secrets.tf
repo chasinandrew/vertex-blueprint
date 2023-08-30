@@ -25,8 +25,8 @@ module "secrets" {
   labels                               = merge(module.tagging.metadata, (each.value.labels))
   secret_id                            = each.value.secret_id
   location                             = var.gcp_region
-  next_rotation_time                   = timeadd(timestamp(), "7776000s")
-  rotation_period                      = "7776000s"
+  next_rotation_time                   = timeadd(timestamp(), each.value.rotation_period)
+  rotation_period                      = try(each.value.rotation_period)
   expire_time                          = try(each.value.expire_time, "")
   secret_data                          = ""
   secret_accessor_group                = each.value.secret_accessor_group

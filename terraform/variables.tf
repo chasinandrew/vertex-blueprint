@@ -144,7 +144,7 @@ variable "secrets" {
   type = list(object({
     labels                        = optional(map(string), {})
     secret_id                     = string
-    rotation_period               = optional(string, "")
+    rotation_period               = optional(string, "31536000s")
     expire_time                   = optional(string, "")
     secret_manager_admin_group    = optional(list(string), [])
     secret_accessor_group         = optional(list(string), [])
