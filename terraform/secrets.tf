@@ -11,10 +11,10 @@
 # required to rotate secrets
 
 locals {
-  vertex_sas = [for s in module.vertex-ai-workbench : format("%s:%s",
+  vertex_sas = flatten([for s in module.vertex-ai-workbench : format("%s:%s",
     "serviceAccount",
     s.sa_notebooks
-  ) if try(s.sa_notebooks != null) || module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev"]
+  )) if try(s.sa_notebooks != null) || module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev"]
 }
 resource "google_pubsub_topic" "secret_rotation" {
   name = "secret-topic"
@@ -38,7 +38,7 @@ module "secrets" {
   secret_accessor_group                = each.value.secret_accessor_group
   pub_sub_topic                        = resource.google_pubsub_topic.secret_rotation.name
   secret_manager_admin_group           = each.value.secret_manager_admin_group
-  secret_manager_accessor_group        = each.value.grant_vertex_workbench_access ? merge(local.vertex_sas, each.value.secret_accessor_group) : each.value.secret_accessor_group
+  secret_manager_accessor_group        = each.value.grant_vertex_workbench_access ? concat(local.vertex_sas, each.value.secret_accessor_group) : each.value.secret_accessor_group
   secret_manager_viewer_group          = each.value.secret_manager_viewer_group
   secret_manager_version_manager_group = each.value.secret_manager_admin_group
   secret_manager_version_adder_group   = each.value.secret_manager_admin_group
