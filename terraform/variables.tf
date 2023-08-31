@@ -88,8 +88,8 @@ variable "buckets" {
   type = list(object({
     bucket_name          = string
     bucket_labels        = optional(map(string), {})
-    sa_display_name      = optional(string)
-    sa_name              = optional(string)
+    sa_display_name      = optional(string, "")
+    sa_name              = optional(string, "")
     bucket_viewers       = optional(list(string), [])
     bucket_admins        = optional(list(string), [])
     bucket_creators      = optional(list(string), [])
@@ -99,6 +99,8 @@ variable "buckets" {
     notebook_obj_viewer  = optional(bool, false)
   }))
   description = "List of buckets."
+
+  default = []
 }
 
 variable "datasets" {
@@ -114,7 +116,7 @@ variable "datasets" {
 }
 
 variable "notebooks" {
-  type        = list(map(string))
+  type        = list((string))
   description = "Input variables for reference architecture - dynamic notebooks"
   validation {
     condition = alltrue([

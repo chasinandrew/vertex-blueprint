@@ -73,8 +73,8 @@ module "storage" {
   project_id         = var.gcp_project_id
   bucket_labels      = module.tagging.metadata
   bucket_name        = [each.value.bucket_name]
-  sa_display_name    = try(each.value.sa_display_name, format("%s Service Account", each.value.bucket_name))
-  sa_name            = try(each.value.sa_name, format("%s-bucket-sa-%s", each.value.bucket_name, index(var.buckets, each.value) + 1))
+  sa_display_name    = each.value.sa_display_name != "" ? each.value.sa_display_name : format("%s Service Account", each.value.bucket_name)
+  sa_name            = each.value.sa_display_name != "" ? each.value.sa_name : format("%s-bucket-sa-%s", each.value.bucket_name, index(var.buckets, each.value) + 1)
   bucket_viewers     = each.value.notebook_obj_viewer ? concat(local.vertex_sas, try(each.value.bucket_viewers, [""])) : try(each.value.bucket_viewers, [""])
   bucket_admins      = each.value.notebook_obj_admin ? concat(local.vertex_sas, try(each.value.bucket_admins, [""])) : try(each.value.bucket_admins, [""])
   bucket_creators    = each.value.notebook_obj_creator ? concat(local.vertex_sas, try(each.value.bucket_creators, [""])) : try(each.value.bucket_creators, [""])
@@ -111,7 +111,7 @@ module "vertex-ai-workbench" {
   source = "./modules/vertex-notebooks"
 
   project_id = var.gcp_project_id
-  labels     = merge(module.tagging.metadata, (each.value.labels))
+  labels     = merge(module.tagging.metadata, try(each.value.labels, {}))
 
   instance_owner = format("%s@%s", each.value.user, var.user_domain)
   zone           = each.value.zone
