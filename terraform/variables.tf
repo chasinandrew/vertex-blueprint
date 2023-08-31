@@ -116,7 +116,7 @@ variable "datasets" {
 }
 
 variable "notebooks" {
-  type        = list((string))
+  type        = list(map(string))
   description = "Input variables for reference architecture - dynamic notebooks"
   validation {
     condition = alltrue([
