@@ -30,8 +30,9 @@ module "secrets" {
   expire_time                          = try(each.value.expire_time, "")
   secret_data                          = "replace-me"
   pub_sub_topic                        = resource.google_pubsub_topic.secret_rotation.name
+  secret_accessor_group                = each.value.notebook_secret_accessor ? concat(local.vertex_sas, each.value.secret_accessor_group) : each.value.secret_accessor_group
   secret_manager_admin_group           = each.value.secret_manager_admin_group
-  secret_manager_accessor_group        = each.value.notebook_secret_accessor ? concat(local.vertex_sas, each.value.secret_accessor_group) : each.value.secret_accessor_group
+  secret_manager_accessor_group        = each.value.secret_manager_accessor_group
   secret_manager_viewer_group          = each.value.secret_manager_viewer_group
   secret_manager_version_manager_group = each.value.secret_manager_admin_group
   secret_manager_version_adder_group   = each.value.secret_manager_admin_group
