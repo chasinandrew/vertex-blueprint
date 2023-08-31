@@ -85,16 +85,30 @@ variable "artifact_registry_format" {
 
 #TODO: include more options for vars
 variable "buckets" {
-  type        = list(map(string))
+  type = list(object({
+    bucket_name          = string
+    bucket_labels        = optional(map(string), {})
+    sa_display_name      = optional(string)
+    sa_name              = optional(string)
+    bucket_viewers       = optional(list(string), [])
+    bucket_admins        = optional(list(string), [])
+    bucket_creators      = optional(list(string), [])
+    num_newer_versions   = optional(number, 1)
+    notebook_obj_admin   = optional(bool, false)
+    notebook_obj_creator = optional(bool, false)
+    notebook_obj_viewer  = optional(bool, false)
+  }))
   description = "List of buckets."
 }
 
 variable "datasets" {
   type = list(object({
-    user_group  = list(string)
-    admin_group = list(string)
-    ml_group    = list(string)
-    dataset_id  = string
+    user_group            = list(string)
+    admin_group           = list(string)
+    ml_group              = list(string)
+    dataset_id            = string
+    workbench_data_viewer = optional(bool, false)
+    workbench_data_editor = optional(bool, false)
   }))
   description = "List of datasets."
 }
@@ -142,14 +156,14 @@ variable "default_zone" {
 
 variable "secrets" {
   type = list(object({
-    labels                        = optional(map(string), {})
-    secret_id                     = string
-    rotation_period               = optional(string, "31536000s")
-    expire_time                   = optional(string, "")
-    secret_manager_admin_group    = optional(list(string), [])
-    secret_accessor_group         = optional(list(string), [])
-    grant_vertex_workbench_access = optional(bool, false)
-    secret_manager_viewer_group   = optional(list(string), [])
+    labels                      = optional(map(string), {})
+    secret_id                   = string
+    rotation_period             = optional(string, "31536000s")
+    expire_time                 = optional(string, "")
+    secret_manager_admin_group  = optional(list(string), [])
+    secret_accessor_group       = optional(list(string), [])
+    notebook_secret_accessor    = optional(bool, false)
+    secret_manager_viewer_group = optional(list(string), [])
   }))
   default     = []
   description = "List of secrets to access."
