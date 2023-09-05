@@ -5,10 +5,7 @@
 # This module is used to create secrets for Data Scientist blueprint usage. 
 
 locals {
-  vertex_sas = flatten([for s in module.vertex-ai-workbench : format("%s:%s",
-    "serviceAccount",
-    s.sa_notebooks
-  ) if try(s.sa_notebooks != null) || module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev"])
+  vertex_sas = module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev" ? module.vertex-ai-workbench[*].sa_member : []
 }
 resource "google_pubsub_topic" "secret_rotation" {
   name                       = "secret-topic"
