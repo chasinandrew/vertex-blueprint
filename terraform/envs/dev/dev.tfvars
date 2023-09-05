@@ -35,8 +35,11 @@ notebooks = [
 
 buckets = [
   {
-    bucket_name = "amc-bucket-s"
-    sa_name     = "bucekt-sa"
+    bucket_name          = "amc-bucket-s"
+    sa_name              = "bucekt-sa"
+    notebook_obj_admin   = true
+    notebook_obj_viewer  = false
+    notebook_obj_creator = false
   },
   {
     bucket_name = "amc-bucket-t"
@@ -45,37 +48,31 @@ buckets = [
 
 datasets = [
   {
-    dataset_id  = "dataset_one"
-    user_group  = ["group:test_priv_read@andrewchasin.joonix.net"]
-    admin_group = ["group:test_priv_read@andrewchasin.joonix.net"]
-    ml_group    = ["group:test_priv_read@andrewchasin.joonix.net"]
+    dataset_id           = "dataset_one"
+    user_group           = ["group:test_priv_read@andrewchasin.joonix.net"]
+    admin_group          = ["group:test_priv_read@andrewchasin.joonix.net"]
+    ml_group             = ["group:test_priv_read@andrewchasin.joonix.net"]
+    notebook_data_editor = true
+    notebook_data_viewer = true
   },
   {
     dataset_id  = "dataset_two"
     user_group  = ["group:test_priv_read@andrewchasin.joonix.net"]
     admin_group = ["group:test_priv_read@andrewchasin.joonix.net"]
     ml_group    = ["group:test_priv_read@andrewchasin.joonix.net"]
+
   }
 ]
-
 
 
 secrets = [
   {
-    secret_id                     = "secret1"
-    secret_manager_admin_group    = ["group:test_priv_read@andrewchasin.joonix.net"]
-    secret_accessor_group         = ["group:test_priv_read@andrewchasin.joonix.net"]
-    secret_manager_viewer_group   = ["group:test_priv_read@andrewchasin.joonix.net"]
-    grant_vertex_workbench_access = true
-
-  },
-  {
-    secret_id                     = "secret2"
-    secret_manager_admin_group    = ["group:test_priv_read@andrewchasin.joonix.net"]
-    secret_accessor_group         = ["group:test_priv_read@andrewchasin.joonix.net"]
-    secret_manager_viewer_group   = ["group:test_priv_read@andrewchasin.joonix.net"]
-    grant_vertex_workbench_access = false
+    secret_id                     = "secret_one"
+    secret_accessor_group         = ["group:test_priv_read@andrewchasin.joonix.net"] # who can access the secret
+    secret_manager_admin_group    = []                                               # project level secret manager admins
+    secret_manager_accessor_group = []                                               # project level iam to access secrets
+    notebook_secret_accessor      = true                                             # specify if notebooks can access the secrets 
 
   }
-
 ]
+

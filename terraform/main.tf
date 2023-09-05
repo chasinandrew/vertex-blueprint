@@ -73,11 +73,11 @@ module "storage" {
   project_id         = var.gcp_project_id
   bucket_labels      = module.tagging.metadata
   bucket_name        = [each.value.bucket_name]
-  sa_display_name    = try(each.value.sa_display_name, format("%s Service Account", each.value.bucket_name))
-  sa_name            = try(each.value.sa_name, format("%s-bucket-sa-%s", each.value.bucket_name, index(var.buckets, each.value) + 1))
-  bucket_viewers     = try(each.value.bucket_viewers, [""])
-  bucket_admins      = try(each.value.bucket_admins, [""])
-  bucket_creators    = try(each.value.bucket_creators, [""])
+  sa_display_name    = each.value.sa_display_name != "" ? each.value.sa_display_name : format("%s Service Account", each.value.bucket_name)
+  sa_name            = each.value.sa_display_name != "" ? each.value.sa_name : format("%s-bucket-sa-%s", each.value.bucket_name, index(var.buckets, each.value) + 1)
+  bucket_viewers     = each.value.notebook_obj_viewer ? concat(local.vertex_sas, try(each.value.bucket_viewers, [])) : try(each.value.bucket_viewers, [])
+  bucket_admins      = each.value.notebook_obj_admin ? concat(local.vertex_sas, try(each.value.bucket_admins, [])) : try(each.value.bucket_admins, [])
+  bucket_creators    = each.value.notebook_obj_creator ? concat(local.vertex_sas, try(each.value.bucket_creators, [])) : try(each.value.bucket_creators, [])
   num_newer_versions = try(each.value.num_newer_versions, 1)
   force_destroy      = false
 
@@ -86,19 +86,23 @@ module "storage" {
   ]
 }
 
+
+
+
 module "dataset" {
   source              = "./modules/bigquery-dataset"
   for_each            = { for obj in var.datasets : obj.dataset_id => obj }
   project_id          = var.gcp_project_id
   labels              = module.tagging.metadata
-  user_group          = try(each.value.user_group, [""])
-  admin_group         = try(each.value.admin_group, [""])
-  ml_group            = try(each.value.ml_group, [""])
+  user_group          = each.value.notebook_dataset_viewer ? concat(local.vertex_sas, try(each.value.user_group, [])) : try(each.value.user_group, [])
+  admin_group         = try(each.value.admin_group, [])
+  ml_group            = each.value.notebook_dataset_editor ? concat(local.vertex_sas, try(each.value.ml_group, [])) : try(each.value.ml_group, [])
   dataset_id          = each.value.dataset_id
   protect_from_delete = true
 
   depends_on = [
-    time_sleep.wait_60_seconds
+    time_sleep.wait_60_seconds,
+
   ]
 }
 
@@ -108,7 +112,7 @@ module "vertex-ai-workbench" {
   source = "./modules/vertex-notebooks"
 
   project_id = var.gcp_project_id
-  labels     = module.tagging.metadata
+  labels     = merge(module.tagging.metadata, try(each.value.labels, {}))
 
   instance_owner = format("%s@%s", each.value.user, var.user_domain)
   zone           = each.value.zone
