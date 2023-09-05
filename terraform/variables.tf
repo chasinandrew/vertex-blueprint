@@ -105,12 +105,12 @@ variable "buckets" {
 
 variable "datasets" {
   type = list(object({
-    user_group            = list(string)
-    admin_group           = list(string)
-    ml_group              = list(string)
-    dataset_id            = string
-    _data_viewer          = optional(bool, false)
-    workbench_data_editor = optional(bool, false)
+    user_group              = list(string)
+    admin_group             = list(string)
+    ml_group                = list(string)
+    dataset_id              = string
+    notebook_dataset_viewer = optional(bool, false)
+    notebook_dataset_editor = optional(bool, false)
   }))
   description = "List of datasets."
 }
