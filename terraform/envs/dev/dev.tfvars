@@ -69,11 +69,9 @@ secrets = [
   {
     secret_id                     = "secret_one"
     secret_accessor_group         = ["group:test_priv_read@andrewchasin.joonix.net"] # who can access the secret
-    secret_manager_admin_group    = [""]                                             # project level secret manager admins
-    secret_manager_accessor_group = [""]                                             # project level iam to access secrets
-    notebook_secret_accessor      = true                                             # specify if notebooks can access the secret
-
-
+    secret_manager_admin_group    = []                                               # project level secret manager admins
+    secret_manager_accessor_group = []                                               # project level iam to access secrets
+    notebook_secret_accessor      = true                                             # specify if notebooks can access the secrets 
 
   }
 ]
