@@ -94,14 +94,15 @@ module "dataset" {
   for_each            = { for obj in var.datasets : obj.dataset_id => obj }
   project_id          = var.gcp_project_id
   labels              = module.tagging.metadata
-  user_group          = each.value.workbench_data_viewer ? concat(local.vertex_sas, try(each.value.user_group, [""])) : try(each.value.user_group, [""])
+  user_group          = each.value.notebook_dataset_viewer ? concat(local.vertex_sas, try(each.value.user_group, [""])) : try(each.value.user_group, [""])
   admin_group         = try(each.value.admin_group, [""])
-  ml_group            = each.value.workbench_data_editor ? concat(local.vertex_sas, try(each.value.ml_group, [""])) : try(each.value.ml_group, [""])
+  ml_group            = each.value.notebook_dataset_editor ? concat(local.vertex_sas, try(each.value.ml_group, [""])) : try(each.value.ml_group, [""])
   dataset_id          = each.value.dataset_id
   protect_from_delete = true
 
   depends_on = [
-    time_sleep.wait_60_seconds
+    time_sleep.wait_60_seconds,
+
   ]
 }
 

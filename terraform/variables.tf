@@ -109,7 +109,7 @@ variable "datasets" {
     admin_group           = list(string)
     ml_group              = list(string)
     dataset_id            = string
-    workbench_data_viewer = optional(bool, false)
+    _data_viewer          = optional(bool, false)
     workbench_data_editor = optional(bool, false)
   }))
   description = "List of datasets."

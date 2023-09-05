@@ -11,10 +11,8 @@ locals {
   ) if try(s.sa_notebooks != null) || module.tagging.metadata.app_environment == "train" || module.tagging.metadata.app_environment == "dev"])
 }
 resource "google_pubsub_topic" "secret_rotation" {
-  name = "secret-topic"
-
-  labels = module.tagging.metadata
-
+  name                       = "secret-topic"
+  labels                     = module.tagging.metadata
   message_retention_duration = "86600s"
 }
 
