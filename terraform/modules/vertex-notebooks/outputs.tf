@@ -3,6 +3,11 @@ output "sa_notebooks" {
   description = "Notebook Service account email"
 }
 
+output "sa_member" {
+  value       = google_service_account.sa_p_notebook_compute.member
+  description = "Notebook Service account members"
+}
+
 output "notebook_instance" {
   value       = google_notebooks_instance.instance.id
   description = "Notebook Name"
